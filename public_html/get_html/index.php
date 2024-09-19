@@ -17,6 +17,11 @@ $sourcelanguage = $_GET['sourcelanguage'] ?? 'en';
 $title = $_GET['title'] ?? '';
 $revision = $_GET['revision'] ?? '';
 $section0 = $_GET['section0'] ?? '';
+$all = $_GET['all'] ?? '';
+
+if ($all == 'all') {
+    $section0 = '';
+}
 
 $no_fix = $_GET['nofix'] ?? '';
 $printetxt = $_GET['printetxt'] ?? '';
