@@ -196,7 +196,7 @@ function remove_temp_Distinguish($html)
 
 function do_changes($HTML_text, $section0)
 {
-    if ($section0 != '') {
+    if ($section0 !== "") {
         $HTML_text = get_section0($HTML_text);
     }
 
