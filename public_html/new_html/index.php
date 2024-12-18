@@ -47,7 +47,7 @@ if ($all == '') {
 
 $HTML_text = wiki_text_to_html($lead_section);
 
-if ($HTML_text != '' && $HTML_text != $lead_section && false) {
+if ($HTML_text != '' && $HTML_text != $lead_section) {
     $HTML_text = html_to_seg($HTML_text);
     // $HTML_text = remove_all_style_tags($HTML_text);
     // $HTML_text = dom_it($HTML_text);
