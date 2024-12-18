@@ -6,6 +6,7 @@ include_once __DIR__ . '/WikiParse/Category.php';
 
 include_once __DIR__ . '/fixes/fix_images.php';
 include_once __DIR__ . '/fixes/fix_cats.php';
+include_once __DIR__ . '/fixes/del_temps.php';
 include_once __DIR__ . '/fixes/fix_temps.php';
 include_once __DIR__ . '/fixes/fix_langs_links.php';
 

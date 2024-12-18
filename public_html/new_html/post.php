@@ -24,6 +24,10 @@ function get_url_params_result(string $url): string
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
     $output = curl_exec($ch);
+    if ($output === FALSE) {
+        echo ("<br>\ncURL Error: " . curl_error($ch) . "<br>\n$url\n<br>");
+    }
+
     curl_close($ch);
     return $output;
 }
@@ -43,9 +47,15 @@ function post_url_params_result(string $endPoint, array $params = []): string
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
     $output = curl_exec($ch);
-    $url = "{$endPoint}?" . http_build_query($params);
+    // $url = "{$endPoint}?" . http_build_query($params);
     // if ($output === FALSE) { echo ("<br>cURL Error: " . curl_error($ch) . "<br>$url"); }
 
+    // Check HTTP response code
+    $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    if ($http_code !== 200) {
+        error_log("API returned HTTP $http_code: $http_code");
+        // return ['error' => "Error: API returned HTTP $http_code"];
+    }
     curl_close($ch);
     return $output;
 }
