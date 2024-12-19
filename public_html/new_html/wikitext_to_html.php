@@ -6,7 +6,6 @@ use function Html\wiki_text_to_html;
 */
 
 use function Post\post_url_params_result;
-use function HtmlFixes\fix_links;
 use function HtmlFixes\fix_link_red;
 use function HtmlFixes\del_div_error;
 
@@ -42,8 +41,6 @@ function wiki_text_to_html($wikitext)
     if ($result == '') {
         return $wikitext;
     }
-    // ---
-    // $result = fix_links($result);
     // ---
     $result = del_div_error($result);
     $result = fix_link_red($result);

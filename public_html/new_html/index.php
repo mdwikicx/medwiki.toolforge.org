@@ -45,8 +45,6 @@ if ($printetxt == "html") {
 
 if ($HTML_text != '' && $HTML_text != $wikitext) {
     $HTML_text = html_to_seg($HTML_text);
-    // $HTML_text = remove_all_style_tags($HTML_text);
-    // $HTML_text = dom_it($HTML_text);
 }
 
 // print_data($revision, $HTML_text, $sourcelanguage, $title, $error = $error);

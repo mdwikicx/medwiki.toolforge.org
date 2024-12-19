@@ -33,39 +33,6 @@ function change_html_to_seg($text)
     }
 }
 
-function is_bad_fix($text)
-{
-    $dom = new DOMDocument();
-    @$dom->loadHTML($text);
-    // ---
-    $bad_tags = [
-        "style",
-        "link"
-    ];
-    foreach ($bad_tags as $tag) {
-        $ems = $dom->getElementsByTagName($tag);
-        // ---
-        foreach ($ems as $ent) {
-            $ent->parentNode->removeChild($ent);
-        }
-    }
-    // ---
-    $elements = $dom->getElementsByTagName('section');
-    // ---
-    if ($elements->length > 2) {
-        return false;
-    }
-    // ---
-    foreach ($elements as $element) {
-        $t = trim($element->textContent);
-        if ($t == "") {
-            return true;
-        }
-    }
-    // ---
-    return false;
-}
-
 function html_to_seg($text)
 {
     // ---
