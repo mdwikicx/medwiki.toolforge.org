@@ -16,6 +16,7 @@ function change_html_to_seg($text)
 
     // Handle the response from your API
     if ($response === false) {
+        error_log("API request failed: " . json_encode($data));
         return ['error' => 'Error: Could not reach API.'];
     }
 
@@ -70,7 +71,7 @@ function html_to_seg($text)
     // ---
     $fixed = change_html_to_seg($text);
     // ---
-    $error  = $error['error'] ?? '';
+    $error  = $fixed['error'] ?? '';
     $result = $fixed['result'] ?? $text;
     // ---
     // $result = str_replace("https://medwiki.toolforge.org/md/", "https://en.wikipedia.org/w/", $result);

@@ -13,10 +13,13 @@ if (isset($_GET['test'])) {
 }
 
 use function Post\get_url_params_result;
+use function FixText\fix_wikitext;
+use function Lead\get_lead_section;
 
-function get_wikitext($title)
+function get_wikitext($title, $all)
 {
     $title2 = str_replace("/", "%2F", $title);
+    $title2 = str_replace(" ", "_", $title2);
     $url = "https://mdwiki.org/w/rest.php/v1/page/" . $title2;
 
     $req = get_url_params_result($url);
@@ -24,6 +27,15 @@ function get_wikitext($title)
 
     $source = $json1["source"] ?? '';
     $revid = $json1["latest"]["id"] ?? '';
+    // ---
+    if ($source != '') {
+        // ---
+        if ($all == '') {
+            $source = get_lead_section($source);
+        }
+        // ---
+        $source = fix_wikitext($source, $title);
+    }
     // ---
     return [$source, $revid];
 }

@@ -1,5 +1,4 @@
 <?php
-header("Content-type: application/json");
 header("Access-Control-Allow-Origin: *");
 
 if (isset($_GET['test'])) {
@@ -39,6 +38,7 @@ if ($title != '' || $revision != '') {
         $message = $test_js['messageTranslations']['en'] ?? 'The specified title does not exist';
         print_data($revision, $HTML_text, $sourcelanguage, $title, $error = $message);
         // http_response_code(404);
+        header("Content-type: application/json");
         exit(1);
     }
 }
@@ -79,4 +79,7 @@ if ($printetxt != '') {
     echo $HTML_text;
     return;
 }
+
+header("Content-type: application/json");
+
 print_data($revision, $HTML_text, $sourcelanguage, $title, $error = $error);

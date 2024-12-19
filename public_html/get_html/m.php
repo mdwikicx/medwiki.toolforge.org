@@ -194,11 +194,29 @@ function remove_temp_Distinguish($html)
     return $content;
 }
 
+function del_div_error($html)
+{
+
+    preg_match_all("/<div([^\/>]*?)>(.+?)<\/div>/is", $html, $matches);
+    // ---
+    foreach ($matches[1] as $key => $options) {
+        // $content = $matches[2][$key];
+        $cite_text = $matches[0][$key];
+        if (preg_match("/class=[\"']error[\"']/is", $options)) {
+            $html = str_replace($cite_text, '', $html);
+        }
+    }
+    // ---
+    return $html;
+}
+
 function do_changes($HTML_text, $section0)
 {
     if ($section0 !== "") {
         $HTML_text = get_section0($HTML_text);
     }
+
+    $HTML_text = del_div_error($HTML_text);
 
     $HTML_text = remove_unlinkedwikibase($HTML_text);
 

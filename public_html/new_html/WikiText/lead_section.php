@@ -11,8 +11,20 @@ function get_lead_section($wikitext)
 {
     $lead = $wikitext;
     // ---
-    // split the wikitext into sections by == get only the first sectio
-    $lead = preg_split('/==+/', $lead, 2, PREG_SPLIT_NO_EMPTY)[0];
+    if ($lead == '' || strpos($lead, '==') == false) {
+        return $wikitext;
+    }
+    // ---
+    // split the wikitext into sections by (lines start with ==+) get only the first section
+    $leade = preg_split('/==+/', $lead, 2, PREG_SPLIT_NO_EMPTY);
+    // ---
+    $lead = $leade[0] ?? '';
+    // ---
+    if ($lead == '') {
+        return $wikitext;
+    }
+    // ---
+    $lead .= "\n==References==\n<references />";
     // ---
     $lead = refs_expend_work($lead, $wikitext);
     // ---
