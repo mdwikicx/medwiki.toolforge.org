@@ -51,7 +51,7 @@ $file_seg  = ($all != '') ? $file_dir . "/seg/$revision" . "_all.html" : $file_d
 // ---
 $HTML_text = "";
 // ---
-$HTML_text = wiki_text_to_html($wikitext, $file_html);
+$HTML_text = wiki_text_to_html($wikitext, $file_html, $title);
 // ---
 if ($printetxt == "html") {
     // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=html
