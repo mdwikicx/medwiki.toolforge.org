@@ -36,7 +36,7 @@ function get_wikitext($title, $all)
     // if $source match #REDIRECT [[.*?]] then get the wikitext from target page
     if (preg_match('/#REDIRECT \[\[(.*?)\]\]/i', $source, $matches)) {
         $title = $matches[1];
-        // echo "Redirecting to: $title\n";
+        error_log("Redirecting to: $title\n");
         $json1 = get_wikitext_from_mdwiki($title);
         $source = $json1[0];
         $revid = $json1[1];
