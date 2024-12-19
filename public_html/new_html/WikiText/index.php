@@ -16,7 +16,7 @@ use function Post\get_url_params_result;
 use function FixText\fix_wikitext;
 use function Lead\get_lead_section;
 
-function get_wikitext($title, $all)
+function get_wikitext_from_mdwiki($title)
 {
     $title2 = str_replace("/", "%2F", $title);
     $title2 = str_replace(" ", "_", $title2);
@@ -27,6 +27,26 @@ function get_wikitext($title, $all)
 
     $source = $json1["source"] ?? '';
     $revid = $json1["latest"]["id"] ?? '';
+    // ---
+    return [$source, $revid];
+}
+
+function get_wikitext($title, $all)
+{
+    // ---
+    $json1 = get_wikitext_from_mdwiki($title);
+    // ---
+    $source = $json1[0];
+    $revid = $json1[1];
+    // ---
+    // if $source match #REDIRECT [[.*?]] then get the wikitext from target page
+    if (preg_match('/#REDIRECT \[\[(.*?)\]\]/i', $source, $matches)) {
+        $title = $matches[1];
+        // echo "Redirecting to: $title\n";
+        $json1 = get_wikitext_from_mdwiki($title);
+        $source = $json1[0];
+        $revid = $json1[1];
+    }
     // ---
     if ($source != '') {
         // ---
