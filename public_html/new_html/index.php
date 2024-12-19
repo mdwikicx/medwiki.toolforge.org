@@ -24,20 +24,28 @@ if ($title == '') {
 
 $get_it = get_wikitext($title, $all);
 
-$wikitext = ($get_it[0] != '') ? $get_it[0] : 'empty text!';
+$wikitext = ($get_it[0] != '') ? $get_it[0] : '';
 $revision = $get_it[1];
 
+$content_types = [
+    "wikitext" => "text/plain",
+    "html" => "text/html",
+    "seg" => "text/html",
+];
+
+$content_type = $content_types[$printetxt] ?? "application/json";
+header("Content-type: $content_type");
+
 if ($printetxt == "wikitext") {
-    header("Content-type: text/plain");
     // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=wikitext
     echo $wikitext;
     exit();
 }
 
+$HTML_text = "";
 $HTML_text = wiki_text_to_html($wikitext);
 
 if ($printetxt == "html") {
-    header("Content-type: text/html");
     // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=html
     echo $HTML_text;
     exit();
@@ -58,17 +66,21 @@ $jsonData = [
 ];
 // ---
 if ($printetxt == "seg") {
-    header("Content-type: text/html");
     // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=seg
     echo $HTML_text;
     exit();
 }
 // ---
+if ($HTML_text == "") {
+    // send request error code using http_response_code
+    http_response_code(404);
+    $jsonData['error'] = "No content found";
+}
+
+// ---
 // Encode data as JSON with appropriate options
 $jsonOutput = json_encode($jsonData, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 // $jsonOutput = json_encode($jsonData);
-
-header("Content-type: application/json");
 
 // Output the JSON
 echo $jsonOutput;

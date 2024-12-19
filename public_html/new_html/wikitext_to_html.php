@@ -33,6 +33,10 @@ function change_it($text)
 function wiki_text_to_html($wikitext)
 {
     // ---
+    if ($wikitext == '') {
+        return "";
+    }
+    // ---
     $fixed = change_it($wikitext);
     // ---
     $error  = $fixed['error'] ?? '';

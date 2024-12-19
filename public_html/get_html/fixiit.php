@@ -6,9 +6,7 @@ function do_fix_it($text)
 {
     $url = 'https://ncc2c.toolforge.org/textp';
 
-    if ($_SERVER['SERVER_NAME'] == 'localhost') {
-        $url = 'http://localhost:8000/textp';
-    }
+    // if ($_SERVER['SERVER_NAME'] == 'localhost') $url = 'http://localhost:8000/textp';
 
     $data = ['html' => $text];
     $response = post_url_params_result($url, $data);
