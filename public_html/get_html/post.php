@@ -38,7 +38,7 @@ function post_url_params_result(string $endPoint, array $params = []): string
     $output = curl_exec($ch);
     $url = "{$endPoint}?" . http_build_query($params);
     if ($output === FALSE) {
-        echo ("<br>cURL Error: " . curl_error($ch) . "<br>$url");
+        error_log("<br>cURL Error: " . curl_error($ch) . "<br>$url");
     }
 
     curl_close($ch);

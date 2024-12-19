@@ -1,8 +1,10 @@
 <?php
 header("Access-Control-Allow-Origin: *");
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
+if (isset($_GET['test'])) {
+    error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+}
 
 require_once __DIR__ . "/require.php";
 
@@ -12,7 +14,7 @@ use function Html\wiki_text_to_html;
 
 $title = $_GET['title'] ?? '';
 $all = $_GET['all'] ?? '';
-$printetxt = $_GET['printetxt'] ?? '';
+$printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
 
 if ($title == '') {
     header("Content-type: application/json");
@@ -35,16 +37,22 @@ $content_types = [
 
 $content_type = $content_types[$printetxt] ?? "application/json";
 header("Content-type: $content_type");
-
+// ---
 if ($printetxt == "wikitext") {
     // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=wikitext
     echo $wikitext;
     exit();
 }
-
+// ---
+$file_dir = __DIR__ . "/revisions";
+// ---
+$file_html = ($all != '') ? $file_dir . "/html/$revision" . "_all.html" : $file_dir . "/html/$revision.html";
+$file_seg  = ($all != '') ? $file_dir . "/seg/$revision" . "_all.html" : $file_dir . "/seg/$revision.html";
+// ---
 $HTML_text = "";
-$HTML_text = wiki_text_to_html($wikitext);
-
+// ---
+$HTML_text = wiki_text_to_html($wikitext, $file_html);
+// ---
 if ($printetxt == "html") {
     // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=html
     echo $HTML_text;
@@ -52,7 +60,7 @@ if ($printetxt == "html") {
 }
 
 if ($HTML_text != '' && $HTML_text != $wikitext) {
-    $HTML_text = html_to_seg($HTML_text);
+    $HTML_text = html_to_seg($HTML_text, $file_seg);
 }
 
 // print_data($revision, $HTML_text, $sourcelanguage, $title, $error = $error);

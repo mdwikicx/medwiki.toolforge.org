@@ -30,7 +30,7 @@ function change_it($text)
     return ['result' => $response];
 }
 
-function wiki_text_to_html($wikitext)
+function do_wiki_text_to_html($wikitext)
 {
     // ---
     if ($wikitext == '') {
@@ -43,11 +43,40 @@ function wiki_text_to_html($wikitext)
     $result = $fixed['result'] ?? '';
     // ---
     if ($result == '') {
-        return $wikitext;
+        return "";
     }
     // ---
     $result = del_div_error($result);
     $result = fix_link_red($result);
+    // ---
+    return $result;
+}
+
+function wiki_text_to_html($wikitext, $file_html)
+{
+    // ---
+    if (file_exists($file_html)) {
+        $HTML_text = file_get_contents($file_html);
+        if ($HTML_text != '') {
+            return $HTML_text;
+        }
+    }
+    // ---
+    if ($wikitext == '') {
+        return "";
+    }
+    // ---
+    $result = do_wiki_text_to_html($wikitext);
+    // ---
+    if ($result == '') {
+        return "";
+    }
+    // ---
+    try {
+        file_put_contents($file_html, $result);
+    } catch (\Exception $e) {
+        error_log("Error: Could not write to file: $file_html");
+    }
     // ---
     return $result;
 }

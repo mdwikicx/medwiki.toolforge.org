@@ -6,12 +6,6 @@ use function Wikitext\get_wikitext;
 
 */
 
-if (isset($_GET['test'])) {
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-}
-
 use function Post\get_url_params_result;
 use function FixText\fix_wikitext;
 use function Lead\get_lead_section;
@@ -56,6 +50,10 @@ function get_wikitext($title, $all)
         // ---
         $source = fix_wikitext($source, $title);
     }
+    // ---
+    if ($source == "") {
+        error_log("wikitext empty!.");
+    };
     // ---
     return [$source, $revid];
 }
