@@ -9,7 +9,7 @@ use function Post\post_url_params_result;
 
 function change_html_to_seg($text)
 {
-    $url = 'https://ncc2c.toolforge.org/textp';
+    $url = 'https://ncc2c.toolforge.org/HtmltoSegments';
 
     $data = ['html' => $text];
     $response = post_url_params_result($url, $data);
@@ -33,50 +33,46 @@ function change_html_to_seg($text)
     }
 }
 
-function is_bad_fix($text)
-{
-    $dom = new DOMDocument();
-    @$dom->loadHTML($text);
-    // ---
-    $bad_tags = [
-        "style",
-        "link"
-    ];
-    foreach ($bad_tags as $tag) {
-        $ems = $dom->getElementsByTagName($tag);
-        // ---
-        foreach ($ems as $ent) {
-            $ent->parentNode->removeChild($ent);
-        }
-    }
-    // ---
-    $elements = $dom->getElementsByTagName('section');
-    // ---
-    if ($elements->length > 2) {
-        return false;
-    }
-    // ---
-    foreach ($elements as $element) {
-        $t = trim($element->textContent);
-        if ($t == "") {
-            return true;
-        }
-    }
-    // ---
-    return false;
-}
-
-function html_to_seg($text)
+function do_html_to_seg($text)
 {
     // ---
     $fixed = change_html_to_seg($text);
     // ---
-    $error  = $fixed['error'] ?? '';
-    $result = $fixed['result'] ?? $text;
+    // $error  = $fixed['error'] ?? '';
+    $result = $fixed['result'] ?? "";
     // ---
     // $result = str_replace("https://medwiki.toolforge.org/md/", "https://en.wikipedia.org/w/", $result);
     // $result = str_replace("https://medwiki.toolforge.org/w/", "https://en.wikipedia.org/w/", $result);
     // $result = str_replace("https://medwiki.toolforge.org/wiki/", "https://en.wikipedia.org/wiki/", $result);
+    // ---
+    if ($result == '') {
+        return "";
+    }
+    // ---
+    return $result;
+}
+
+function html_to_seg($text, $file_seg)
+{
+    // ---
+    if (file_exists($file_seg)) {
+        $text = file_get_contents($file_seg);
+        if ($text != '') {
+            return $text;
+        }
+    }
+    // ---
+    $result = do_html_to_seg($text);
+    // ---
+    if ($result == '') {
+        return "";
+    }
+    // ---
+    try {
+        file_put_contents($file_seg, $result);
+    } catch (\Exception $e) {
+        error_log("Error: Could not write to file: $file_seg");
+    }
     // ---
     return $result;
 }

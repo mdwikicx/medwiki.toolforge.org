@@ -4,11 +4,9 @@ require_once __DIR__ . "/post.php";
 
 function do_fix_it($text)
 {
-    $url = 'https://ncc2c.toolforge.org/textp';
+    $url = 'https://ncc2c.toolforge.org/HtmltoSegments';
 
-    if ($_SERVER['SERVER_NAME'] == 'localhost') {
-        $url = 'http://localhost:8000/textp';
-    }
+    // if ($_SERVER['SERVER_NAME'] == 'localhost') $url = 'http://localhost:8000/HtmltoSegments';
 
     $data = ['html' => $text];
     $response = post_url_params_result($url, $data);

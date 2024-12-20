@@ -25,7 +25,7 @@ function get_url_params_result(string $url): string
 
     $output = curl_exec($ch);
     if ($output === FALSE) {
-        echo ("<br>\ncURL Error: " . curl_error($ch) . "<br>\n$url\n<br>");
+        error_log("<br>\ncURL Error: " . curl_error($ch) . "<br>\n$url\n<br>");
     }
 
     curl_close($ch);
