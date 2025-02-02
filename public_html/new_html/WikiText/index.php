@@ -26,10 +26,20 @@ function get_wikitext_from_mdwiki_api($title)
 
     // $req = post_url_params_result($url, $params);
     $req = handle_url_request($url, 'GET', $params);
+
+    if ($req === false) {
+        test_print("Failed to fetch data from MDWiki API for title: $title");
+        return ['', ''];
+    }
     // ---
     $json1 = json_decode($req, true);
     // ---
     $revisions = $json1["query"]["pages"][0]["revisions"][0] ?? [];
+
+    if (empty($revisions)) {
+        test_print("No revision data found for title: $title");
+        return ['', ''];
+    }
 
     $source = $revisions["content"] ?? '';
     $revid = $revisions["revid"] ?? '';
