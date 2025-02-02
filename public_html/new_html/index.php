@@ -51,7 +51,13 @@ $file_seg  = ($all != '') ? $file_dir . "/seg/$revision" . "_all.html" : $file_d
 // ---
 $HTML_text = "";
 // ---
-$HTML_text = wiki_text_to_html($wikitext, $file_html, $title);
+try {
+    $HTML_text = wiki_text_to_html($wikitext, $file_html, $title);
+} catch (Exception $e) {
+    test_print("HTML generation failed for title: $title. Error: " . $e->getMessage());
+    http_response_code(500);
+    exit(json_encode(['error' => 'Failed to generate HTML content']));
+}
 // ---
 if ($printetxt == "html") {
     // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=html

@@ -5,18 +5,20 @@ namespace Segments;
 use function Segments\html_to_seg;
 */
 
-use function Post\post_url_params_result;
+use function Post\handle_url_request;
+// use function Post\post_url_params_result;
 
 function change_html_to_seg($text)
 {
     $url = 'https://ncc2c.toolforge.org/HtmltoSegments';
 
     $data = ['html' => $text];
-    $response = post_url_params_result($url, $data);
+    // $response = post_url_params_result($url, $data);
+    $response = handle_url_request($url, 'POST', $data);
 
     // Handle the response from your API
     if ($response === false) {
-        error_log("API request failed: " . json_encode($data));
+        test_print("API request failed: " . json_encode($data));
         return ['error' => 'Error: Could not reach API.'];
     }
 
@@ -71,7 +73,7 @@ function html_to_seg($text, $file_seg)
     try {
         file_put_contents($file_seg, $result);
     } catch (\Exception $e) {
-        error_log("Error: Could not write to file: $file_seg");
+        test_print("Error: Could not write to file: $file_seg");
     }
     // ---
     return $result;
