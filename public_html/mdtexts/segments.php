@@ -1,6 +1,5 @@
 <?php
-// تحديد مسار المجلد
-$directory = __DIR__ . '/segments'; // قم بتعديل هذا المسار
+$directory = __DIR__ . '/segments';
 
 $title = $_GET['title'];
 
