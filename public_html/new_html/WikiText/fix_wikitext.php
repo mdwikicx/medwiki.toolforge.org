@@ -33,7 +33,7 @@ function fix_wikitext($text, $title)
     // ---
     // $text = remove_lang_links($text);
     // ---
-    $text = remove_images($text);
+    // $text = remove_images($text);
     // ---
     $text = remove_categories($text);
     // ---
