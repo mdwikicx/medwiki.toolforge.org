@@ -2,3 +2,11 @@
 *.html
 /public_html/get_html/test2
 public_html/new_html.zip
+/public_html/mdtexts/wikitext
+public_html/adminer.php
+public_html/adminer1.php
+public_html/mdtexts/all_pages.json
+public_html/mdtexts/cats_titles.json
+public_html/mdtexts/titles.json
+public_html/post.php
+public_html/index.php
