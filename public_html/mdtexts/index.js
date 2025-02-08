@@ -70,35 +70,51 @@ async function one_cat(key, titles, files) {
 
 }
 
+async function cats_titles() {
+    try {
+        const response = await fetch('cats_titles.json');
+        if (!response.ok) {
+            $('#error-alert').text(`HTTP error! status: ${response.status}`).removeClass('d-none');
+            return {};
+        }
+        const data = await response.json();
+        if (!data || typeof data !== 'object') {
+            $('#error-alert').text('Invalid data format').removeClass('d-none');
+            return {};
+        }
+        return data;
+    } catch (error) {
+        console.error('Error loading categories:', error);
+        $('#error-alert').text('Failed to load categories. Please try again.').removeClass('d-none');
+        return {};
+    }
+}
 async function add_titles() {
-    const data = await fetch('cats_titles.json')
-        .then(response => response.json())
-        .then(data => {
-            return data
-        })
+    const data = await cats_titles();
 
     const rows_ul = document.getElementById('rows_ul');
     const mainlist = document.getElementById('main');
 
-    const key_1 = 'all';
-    const li_f = document.createElement('li');
-    li_f.className = 'nav-item';
-    li_f.role = 'presentation';
-    li_f.innerHTML = `
-        <button class="nav-link" id="tab_${key_1}" data-bs-toggle="tab" data-bs-target="#s_${key_1}" type="button"
-            role="tab" aria-controls="s_${key_1}" aria-selected="true">ALL</button>
-    `;
-    rows_ul.appendChild(li_f);
+    // const key_1 = 'all';
+    // const li_f = document.createElement('li');
+    // li_f.className = 'nav-item';
+    // li_f.role = 'presentation';
+    // li_f.innerHTML = `
+    //     <button class="nav-link" id="tab_${key_1}" data-bs-toggle="tab" data-bs-target="#s_${key_1}" type="button"
+    //         role="tab" aria-controls="s_${key_1}" aria-selected="true">ALL</button>
+    // `;
+    // rows_ul.appendChild(li_f);
 
     const main_rows = document.getElementById('main_rows');
 
-    var div = document.createElement('div');
-    div.className = 'tab-pane fade show active';
-    div.id = `s_${key_1}`;
-    div.role = 'tabpanel';
-    div.setAttribute('aria-labelledby', `tab_${key_1}`);
-    div.setAttribute('tabindex', `0`);
-    main_rows.appendChild(div);
+    // var div = document.createElement('div');
+    // div.className = 'tab-pane fade show active';
+    // div.id = `s_${key_1}`;
+    // div.role = 'tabpanel';
+    // div.setAttribute('aria-labelledby', `tab_${key_1}`);
+    // div.setAttribute('tabindex', `0`);
+    // main_rows.appendChild(div);
+    var active_done = false;
 
     for (const key in data) {
 
@@ -108,13 +124,19 @@ async function add_titles() {
         if (key == 'World Health Organization essential medicines') {
             key_title = 'WHO EM';
         }
-
+        var active_class = '';
+        var selected = 'false';
+        if (!active_done) {
+            active_done = true;
+            active_class = 'active';
+            selected = 'true';
+        }
         const li_f = document.createElement('li');
         li_f.className = 'nav-item';
         li_f.role = 'presentation';
         li_f.innerHTML = `
             <button class="nav-link" id="tab_${key2}" data-bs-toggle="tab" data-bs-target="#s_${key2}" type="button"
-                role="tab" aria-controls="s_${key2}" aria-selected="false">${key_title} <span id="${key2}_count"></span></button>
+                role="tab" aria-controls="s_${key2}" aria-selected="${selected}">${key_title} <span id="${key2}_count"></span></button>
         `;
         rows_ul.appendChild(li_f);
 
@@ -147,7 +169,7 @@ async function add_titles() {
         `;
 
         var div2 = document.createElement('div');
-        div2.className = 'tab-pane fade show';
+        div2.className = 'tab-pane fade show ' + active_class;
         div2.id = `s_${key2}`;
         div2.role = 'tabpanel';
         div2.setAttribute('aria-labelledby', `tab_${key2}`);
@@ -162,12 +184,7 @@ async function add_titles() {
 }
 
 async function by_cat(files) {
-    const data = await fetch('cats_titles.json')
-        .then(response => response.json())
-        .then(data => {
-            return data
-        })
-        .catch(error => console.error('Error loading titles.json:', error));
+    const data = await cats_titles();
 
     for (const key in data) {
         one_cat(key, data[key], files);

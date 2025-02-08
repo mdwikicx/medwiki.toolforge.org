@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
@@ -27,6 +27,7 @@
         }
     </style>
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
@@ -47,9 +48,10 @@
             </div>
         </div>
     </nav>
-    <div class="container">
+    <div class="container-fluid">
         <h1 class="text-center"><a href="/mdtexts/">ALL Articles</a> (<span id="Articles">0</span>/<span
                 id="AllArticles">0</span>)</h1>
+        <div id="error-alert" class="alert alert-danger d-none" role="alert"></div>
         <ul class="nav nav-tabs" id="rows_ul" role="tablist">
         </ul>
         <div class="tab-content" id="main_rows">
