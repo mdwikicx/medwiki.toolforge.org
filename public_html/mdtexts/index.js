@@ -1,11 +1,16 @@
 
 async function get_titles_exists() {
-    return await fetch('files.php')
-        .then(response => response.json())
-        .then(files => {
-            return files
-        })
-        .catch(error => console.error('Error loading files:', error));
+    try {
+        const response = await fetch('files.php');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error loading files:', error);
+        $('#error-alert').text('Failed to load files. Please try again.').show();
+        return [];
+    }
 }
 
 function AllArticles_add(len) {
@@ -60,7 +65,7 @@ async function one_cat(key, titles, files) {
             // to_add.append(row);
         }
     }
-    $(`#${key2}_count`).text(`(${len} titles)`);
+    $(`#${key2}_count`).text(`(${len})`);
     AllArticles_add(len);
 
 }
@@ -72,11 +77,47 @@ async function add_titles() {
             return data
         })
 
+    const rows_ul = document.getElementById('rows_ul');
+    const mainlist = document.getElementById('main');
+
+    const key_1 = 'all';
+    const li_f = document.createElement('li');
+    li_f.className = 'nav-item';
+    li_f.role = 'presentation';
+    li_f.innerHTML = `
+        <button class="nav-link" id="tab_${key_1}" data-bs-toggle="tab" data-bs-target="#s_${key_1}" type="button"
+            role="tab" aria-controls="s_${key_1}" aria-selected="true">ALL</button>
+    `;
+    rows_ul.appendChild(li_f);
+
+    const main_rows = document.getElementById('main_rows');
+
+    var div = document.createElement('div');
+    div.className = 'tab-pane fade show active';
+    div.id = `s_${key_1}`;
+    div.role = 'tabpanel';
+    div.setAttribute('aria-labelledby', `tab_${key_1}`);
+    div.setAttribute('tabindex', `0`);
+    main_rows.appendChild(div);
+
     for (const key in data) {
 
         const key2 = key.replaceAll(' ', '_');
         const key_id = `tbody_${key2}`
-        const mainlist = document.getElementById('main');
+        var key_title = key;
+        if (key == 'World Health Organization essential medicines') {
+            key_title = 'WHO EM';
+        }
+
+        const li_f = document.createElement('li');
+        li_f.className = 'nav-item';
+        li_f.role = 'presentation';
+        li_f.innerHTML = `
+            <button class="nav-link" id="tab_${key2}" data-bs-toggle="tab" data-bs-target="#s_${key2}" type="button"
+                role="tab" aria-controls="s_${key2}" aria-selected="false">${key_title} <span id="${key2}_count"></span></button>
+        `;
+        rows_ul.appendChild(li_f);
+
 
         const fileList = document.createElement('div');
         fileList.className = 'row-cols-1 mt-4';
@@ -84,7 +125,7 @@ async function add_titles() {
             <div class="card">
                 <div class="card-header">
                     <h6 class="card-title">
-                        <a class="card-link" href="https://mdwiki.org/wiki/Category:${key}" target="_blank">Category:${key}</a> <span id="${key2}_count"></span>
+                        <a class="card-link" href="https://mdwiki.org/wiki/Category:${key}" target="_blank">Category:${key}</a>
                     </h6>
                 </div>
                 <div class="card-body">
@@ -105,7 +146,18 @@ async function add_titles() {
             </div>
         `;
 
-        mainlist.appendChild(fileList);
+        var div2 = document.createElement('div');
+        div2.className = 'tab-pane fade show';
+        div2.id = `s_${key2}`;
+        div2.role = 'tabpanel';
+        div2.setAttribute('aria-labelledby', `tab_${key2}`);
+        div2.setAttribute('tabindex', `0`);
+
+
+        div2.appendChild(fileList);
+
+        main_rows.appendChild(div2);
+
     }
 }
 

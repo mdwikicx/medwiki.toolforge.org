@@ -1,5 +1,6 @@
 
 *.html
+!public_html/mdtexts/index.html
 /public_html/get_html/test2
 public_html/new_html.zip
 /public_html/mdtexts/wikitext
