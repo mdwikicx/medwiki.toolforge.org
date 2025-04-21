@@ -26,37 +26,80 @@
 </head>
 
 <?php
+// Enable error reporting for debugging
+if (isset($_REQUEST['test'])) {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+}
 
+function make_badge($files, $file)
+{
+    // ---
+    if (!in_array($file, $files)) {
+        return "<span class='badge bg-danger'>Missing</span>";
+    }
+    // ---
+    // return "<span class='badge bg-success'>OK</span>";
+    return "";
+}
+// ---
+$mainDir = __DIR__ . '/revisions_new/';
+// ---
 $dirs = array_filter(glob(__DIR__ . '/revisions_new/*/'), 'is_dir');
+// sort directories by last modified date
+usort($dirs, function ($a, $b) {
+    return filemtime($b) - filemtime($a);
+});
+// ---
 $tbody = '';
 // ---
 $number = 0;
+// ---
+$main_url = $_SERVER['REQUEST_URI'];
+$main_url = str_replace('/revisions_new.php', '', $main_url);
 // ---
 foreach ($dirs as $dir) {
     // ---
     $number += 1;
     // ---
+    $lastModified = date('Y-m-d H:i', filemtime($dir));
+    // ---
     $dir = rtrim($dir, '/');
     // ---
-    $oldid = basename($dir);
-    $oldid_number = str_replace('_all', '', $oldid);
+    $dir_path = basename($dir);
+    $oldid_number = str_replace('_all', '', $dir_path);
     // ---
     $files = array_filter(glob("$dir/*"), 'is_file');
-    $file_count = count($files);
+    // ---
+    $files = array_map('basename', $files);
+    // ---
+    // if wikitext.txt in $files
+    $wikitext_tag = make_badge($files, 'wikitext.txt');
+    $html_tag = make_badge($files, 'html.html');
+    $seg_tag = make_badge($files, 'seg.html');
+    // ---
+    $title = (is_file("$dir/title.txt")) ? file_get_contents("$dir/title.txt") : '';
+    $title = htmlspecialchars($title);
+    // ---
     $tbody .= <<<HTML
         <tr>
             <td>$number</td>
+            <td>$lastModified</td>
             <td>
-                <a class="card-link" href="https://mdwiki.org/wiki/index.php?oldid=$oldid_number" target="_blank">$oldid</a>
+                <a class="card-link" href="https://mdwiki.org/wiki/index.php?title=$title" target="_blank">$title</a>
             </td>
             <td>
-                <a class="card-link" href="revisions_new/$dir/wikitext.txt" target="_blank">Wikitext</a>
+                <a class="card-link" href="https://mdwiki.org/wiki/index.php?oldid=$oldid_number" target="_blank">$dir_path</a>
             </td>
             <td>
-                <a class="card-link" href="revisions_new/$dir/html.html" target="_blank">Html</a>
+                <a class="card-link" href="$main_url/revisions_new/$dir_path/wikitext.txt" target="_blank">Wikitext</a> $wikitext_tag
             </td>
             <td>
-                <a class="card-link" href="revisions_new/$dir/seg.html" target="_blank">Segments</a>
+                <a class="card-link" href="$main_url/revisions_new/$dir_path/html.html" target="_blank">Html</a> $html_tag
+            </td>
+            <td>
+                <a class="card-link" href="$main_url/revisions_new/$dir_path/seg.html" target="_blank">Segments</a> $seg_tag
             </td>
         </tr>
     HTML;
@@ -92,6 +135,8 @@ foreach ($dirs as $dir) {
                     <thead>
                         <tr>
                             <th>#</th>
+                            <th>lastModified</th>
+                            <th>Title</th>
                             <th>Revision</th>
                             <th>Wikitext</th>
                             <th>Html</th>

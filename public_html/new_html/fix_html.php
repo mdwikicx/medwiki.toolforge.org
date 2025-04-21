@@ -53,6 +53,15 @@ function fix_link_red($html)
     foreach ($matches[1] as $key => $options) {
         $content = $matches[2][$key];
         $cite_text = $matches[0][$key];
+        // ---
+        // <a rel="mw:ExtLink" href="//en.wikipedia.org/w/index.php?title=Video:Pelvic_binder&amp;veaction=edit" class="external text"><span class="mw-ui-button mw-ui-progressive">Edit with VisualEditor</span></a>
+        // ---
+        // if link has Edit with VisualEditor del it
+        if (preg_match("/Edit with VisualEditor/is", $cite_text)) {
+            $html = str_replace($cite_text, '', $html);
+            continue;
+        }
+        // ---
         if (preg_match("/mw:LocalizedAttrs/is", $options)) {
             // ---
             $attrs = get_attrs($options);

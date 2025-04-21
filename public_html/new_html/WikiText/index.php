@@ -66,6 +66,8 @@ function get_wikitext_from_mdwiki_restapi($title)
 function get_wikitext($title, $all)
 {
     // ---
+    $title = str_replace(" ", "_", $title);
+    // ---
     $json1 = get_wikitext_from_mdwiki_restapi($title);
     // ---
     $source = $json1[0];

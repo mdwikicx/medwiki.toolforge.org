@@ -71,6 +71,8 @@ function do_wiki_text_to_html($wikitext, $title)
 function wiki_text_to_html($wikitext, $file_html, $title)
 {
     // ---
+    $title = str_replace(" ", "_", $title);
+    // ---
     if (file_exists($file_html)) {
         $HTML_text = file_get_contents($file_html);
         if ($HTML_text != '') {

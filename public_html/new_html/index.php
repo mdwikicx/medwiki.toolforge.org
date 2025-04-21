@@ -24,6 +24,14 @@ if ($title == '') {
     exit(1);
 }
 
+// ---
+// first litter in $title must be capital
+$title = ucfirst($title);
+// ---
+// if $title startwith Video then $all = 1
+if (strpos($title, 'Video') === 0) {
+    $all = "1";
+}
 $get_it = get_wikitext($title, $all);
 
 $wikitext = ($get_it[0] != '') ? $get_it[0] : '';
@@ -69,19 +77,27 @@ $file_dir = __DIR__ . "/revisions_new/$revision";
 // ---
 if ($all != '') $file_dir .= "_all";
 // ---
-if (!mkdir($file_dir, 0777, true) && !is_dir($file_dir)) {
-    test_print(sprintf('Failed to create directory "%s".', $file_dir));
+if (!is_dir($file_dir)) {
+    if (!mkdir($file_dir, 0777, true)) {
+        test_print(sprintf('Failed to create directory "%s".', $file_dir));
+    }
 }
 // ---
 $file_wikitext = $file_dir . "/wikitext.txt";
 $file_html     = $file_dir . "/html.html";
 $file_seg      = $file_dir . "/seg.html";
+$file_title    = $file_dir . "/title.txt";
 // ---
 try {
     try {
         file_put_contents($file_wikitext, $wikitext);
     } catch (\Exception $e) {
         test_print("Error: Could not write to file: $file_wikitext");
+    }
+    try {
+        file_put_contents($file_title, $title);
+    } catch (\Exception $e) {
+        test_print("Error: Could not write to file: $file_title");
     }
     // ---
     $HTML_text = wiki_text_to_html($wikitext, $file_html, $title);
