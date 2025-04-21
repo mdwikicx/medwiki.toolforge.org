@@ -32,6 +32,16 @@ function change_it($text, $title)
         test_print("API returned error: $response");
         return ['error' => 'Error: Wikipedia API returned an error.'];
     }
+    // Check if response is empty
+    if (empty($response)) {
+        test_print("API returned empty response: " . json_encode($data));
+        return ['error' => 'Error: Wikipedia API returned an empty response.'];
+    }
+    // Check if response is valid HTML
+    if (strpos($response, "<html") === false) {
+        test_print("API returned invalid HTML: " . json_encode($data));
+        return ['error' => 'Error: Wikipedia API returned invalid HTML.'];
+    }
 
     return ['result' => $response];
 }
@@ -60,6 +70,8 @@ function do_wiki_text_to_html($wikitext, $title)
 
 function wiki_text_to_html($wikitext, $file_html, $title)
 {
+    // ---
+    $title = str_replace(" ", "_", $title);
     // ---
     if (file_exists($file_html)) {
         $HTML_text = file_get_contents($file_html);
