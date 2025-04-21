@@ -36,6 +36,8 @@ function post_url_params_result(string $endPoint, array $params = []): string
     $output = curl_exec($ch);
     if ($output === FALSE) {
         test_print("<br>\ncURL Error: " . curl_error($ch));
+        curl_close($ch);
+        return '';
     }
     // Check HTTP response code
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -79,6 +81,8 @@ function handle_url_request(string $endPoint, string $method = 'GET', array $par
 
     if ($output === false) {
         test_print("<br>\ncURL Error: " . curl_error($ch));
+        curl_close($ch);
+        return '';
     }
 
     $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);

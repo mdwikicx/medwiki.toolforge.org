@@ -206,7 +206,9 @@
 			}
 			// ---
 			console.log(output);
-			add_segmented(output.segmentedContent);
+			if (output?.segmentedContent) {
+				await add_segmented(output.segmentedContent);
+			}
 			// ---
 			const lasturl = mw.cx.TranslationMdwiki.get_last_url();
 			$('#lasturl').val(lasturl);

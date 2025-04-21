@@ -189,7 +189,7 @@ function removeUnlinkedWikibase(html) {
 			// element.parentNode.removeChild(element);
 			// element.remove();
 
-			html = html.replace(lowerOuterHtml, '');
+			html = html.replace(element.outerHTML, '');
 		}
 	});
 
@@ -302,7 +302,7 @@ async function get_mdtexts_2024(title) {
 		console.log(error);
 	}
 	// ---
-	let html = data.html || "";
+	let html = data?.html || "";
 	// ---
 	if (!html || html === "") {
 		console.log("get_mdtexts_2024: not found");
