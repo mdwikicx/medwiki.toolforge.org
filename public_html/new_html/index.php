@@ -44,14 +44,46 @@ if ($printetxt == "wikitext") {
     exit();
 }
 // ---
-$file_dir = __DIR__ . "/revisions";
-// ---
-$file_html = ($all != '') ? $file_dir . "/html/$revision" . "_all.html" : $file_dir . "/html/$revision.html";
-$file_seg  = ($all != '') ? $file_dir . "/seg/$revision" . "_all.html" : $file_dir . "/seg/$revision.html";
-// ---
 $HTML_text = "";
+$SEG_text = "";
+// ---
+// $file_dir_old = __DIR__ . "/revisions";
+// $file_html_old = ($all != '') ? $file_dir_old . "/html/$revision" . "_all.html" : $file_dir_old . "/html/$revision.html";
+// $file_seg_old  = ($all != '') ? $file_dir_old . "/seg/$revision" . "_all.html" : $file_dir_old . "/seg/$revision.html";
+// ---
+if ($wikitext == '' || $revision == '') {
+    // send request error code using http_response_code
+    http_response_code(404);
+    $jsonData = [
+        "sourceLanguage" => "en",
+        "title" => $title,
+        "revision" => $revision,
+        "segmentedContent" => $SEG_text,
+        "categories" => []
+    ];
+    $jsonData['error'] = "No content found!";
+    exit(json_encode($jsonData));
+}
+// ---
+$file_dir = __DIR__ . "/revisions_new/$revision";
+// ---
+if ($all != '') $file_dir .= "_all";
+// ---
+if (!mkdir($file_dir, 0777, true) && !is_dir($file_dir)) {
+    test_print(sprintf('Failed to create directory "%s".', $file_dir));
+}
+// ---
+$file_wikitext = $file_dir . "/wikitext.txt";
+$file_html     = $file_dir . "/html.html";
+$file_seg      = $file_dir . "/seg.html";
 // ---
 try {
+    try {
+        file_put_contents($file_wikitext, $wikitext);
+    } catch (\Exception $e) {
+        test_print("Error: Could not write to file: $file_wikitext");
+    }
+    // ---
     $HTML_text = wiki_text_to_html($wikitext, $file_html, $title);
 } catch (Exception $e) {
     test_print("HTML generation failed for title: $title. Error: " . $e->getMessage());
@@ -66,26 +98,26 @@ if ($printetxt == "html") {
 }
 
 if ($HTML_text != '' && $HTML_text != $wikitext) {
-    $HTML_text = html_to_seg($HTML_text, $file_seg);
+    $SEG_text = html_to_seg($HTML_text, $file_seg);
 }
-
-// print_data($revision, $HTML_text, $sourcelanguage, $title, $error = $error);
+// ---
+// print_data($revision, $SEG_text, $sourcelanguage, $title, $error = $error);
 
 $jsonData = [
     "sourceLanguage" => "en",
     "title" => $title,
     "revision" => $revision,
-    "segmentedContent" => $HTML_text,
+    "segmentedContent" => $SEG_text,
     "categories" => []
 ];
 // ---
 if ($printetxt == "seg") {
     // https://medwiki.toolforge.org/new_html/index.php?title=Trifluoperazine&printetxt=seg
-    echo $HTML_text;
+    echo $SEG_text;
     exit();
 }
 // ---
-if ($HTML_text == "") {
+if ($SEG_text == "") {
     // send request error code using http_response_code
     http_response_code(404);
     $jsonData['error'] = "No content found";

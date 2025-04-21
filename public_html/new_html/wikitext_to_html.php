@@ -32,6 +32,16 @@ function change_it($text, $title)
         test_print("API returned error: $response");
         return ['error' => 'Error: Wikipedia API returned an error.'];
     }
+    // Check if response is empty
+    if (empty($response)) {
+        test_print("API returned empty response: " . json_encode($data));
+        return ['error' => 'Error: Wikipedia API returned an empty response.'];
+    }
+    // Check if response is valid HTML
+    if (strpos($response, "<html") === false) {
+        test_print("API returned invalid HTML: " . json_encode($data));
+        return ['error' => 'Error: Wikipedia API returned invalid HTML.'];
+    }
 
     return ['result' => $response];
 }
