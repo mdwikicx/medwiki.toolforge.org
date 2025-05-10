@@ -1,7 +1,5 @@
 <?php
 
-header("Access-Control-Allow-Origin: *");
-
 if (isset($_GET['test'])) {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
@@ -24,8 +22,10 @@ $file_path = __DIR__ . "/revisions_new/$revid/$file";
 
 $text = file_get_contents($file_path) ?? '';
 
-if ($file == "seg.html" || $file == "html.html") {
-    $text = remove_data_parsoid($text);
+if (!empty($text)) {
+    if ($file == "seg.html" || $file == "html.html") {
+        $text = remove_data_parsoid($text);
+    }
 }
 
 echo $text;
