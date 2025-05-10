@@ -82,6 +82,9 @@ foreach ($dirs as $dir) {
     $title = (is_file("$dir/title.txt")) ? file_get_contents("$dir/title.txt") : '';
     $title = htmlspecialchars($title);
     // ---
+    $url = "$main_url/revisions_new/$dir_path";
+    $url = "open.php?revid=$dir_path&file";
+    // ---
     $tbody .= <<<HTML
         <tr>
             <td>$number</td>
@@ -93,13 +96,13 @@ foreach ($dirs as $dir) {
                 <a class="card-link" href="https://mdwiki.org/wiki/index.php?oldid=$oldid_number" target="_blank">$dir_path</a>
             </td>
             <td>
-                <a class="card-link" href="$main_url/revisions_new/$dir_path/wikitext.txt" target="_blank">Wikitext</a> $wikitext_tag
+                <a class="card-link" href="$url=wikitext.txt" target="_blank">Wikitext</a> $wikitext_tag
             </td>
             <td>
-                <a class="card-link" href="$main_url/revisions_new/$dir_path/html.html" target="_blank">Html</a> $html_tag
+                <a class="card-link" href="$url=html.html" target="_blank">Html</a> $html_tag
             </td>
             <td>
-                <a class="card-link" href="$main_url/revisions_new/$dir_path/seg.html" target="_blank">Segments</a> $seg_tag
+                <a class="card-link" href="$url=seg.html" target="_blank">Segments</a> $seg_tag
             </td>
         </tr>
     HTML;
