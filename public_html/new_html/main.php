@@ -11,9 +11,12 @@ require_once __DIR__ . "/require.php";
 use function Wikitext\get_wikitext;
 use function Segments\html_to_seg;
 use function Html\wiki_text_to_html;
+use function HtmlFixes\remove_data_parsoid;
 
 $title = $_GET['title'] ?? '';
+
 $all = $_GET['all'] ?? '';
+
 $printetxt = $_GET['printetxt'] ?? $_GET['print'] ?? '';
 
 if ($title == '') {
@@ -54,6 +57,8 @@ if ($printetxt == "wikitext") {
 // ---
 $HTML_text = "";
 $SEG_text = "";
+// ---
+// $revision = (isset($_GET['revision'])) ? $_GET['revision'] : $revision;
 // ---
 // $file_dir_old = __DIR__ . "/revisions";
 // $file_html_old = ($all != '') ? $file_dir_old . "/html/$revision" . "_all.html" : $file_dir_old . "/html/$revision.html";
@@ -101,6 +106,7 @@ try {
     }
     // ---
     $HTML_text = wiki_text_to_html($wikitext, $file_html, $title);
+    $HTML_text = remove_data_parsoid($HTML_text);
 } catch (Exception $e) {
     test_print("HTML generation failed for title: $title. Error: " . $e->getMessage());
     http_response_code(500);
@@ -115,6 +121,7 @@ if ($printetxt == "html") {
 
 if ($HTML_text != '' && $HTML_text != $wikitext) {
     $SEG_text = html_to_seg($HTML_text, $file_seg);
+    $SEG_text = remove_data_parsoid($SEG_text);
 }
 // ---
 // print_data($revision, $SEG_text, $sourcelanguage, $title, $error = $error);
