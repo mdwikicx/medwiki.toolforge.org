@@ -12,6 +12,7 @@ function test_print($str)
         echo "\n";
     }
 }
+
 include_once __DIR__ . '/WikiText/require.php';
 
 require_once __DIR__ . "/file_helps.php";

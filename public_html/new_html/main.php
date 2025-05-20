@@ -124,7 +124,7 @@ function get_SEG_text($HTML_text, $file_seg)
     return $SEG_text;
 }
 
-function start($request, $title, $printetxt)
+function start($request, $title)
 {
     // ---
     $all = $request['all'] ?? '';
@@ -133,7 +133,7 @@ function start($request, $title, $printetxt)
         $all = "1";
     }
     // ---
-    [$wikitext, $revision] = get_wikitext_revision($title, $all, $printetxt);
+    [$wikitext, $revision] = get_wikitext_revision($title, $all);
     // ---
     // $revision = (isset($request['revision'])) ? $request['revision'] : $revision;
     // ---
@@ -198,4 +198,4 @@ if ($title == '') {
     exit(1);
 }
 
-start($_GET, $title, $printetxt);
+start($_GET, $title);

@@ -57,10 +57,10 @@ function do_html_to_seg($text)
 function html_to_seg($text, $file_seg)
 {
     // ---
-    $text = read_file($file_seg);
+    $seg_text = read_file($file_seg);
     // ---
-    if ($text != '') {
-        return $text;
+    if ($seg_text != '') {
+        return $seg_text;
     }
     // ---
     $result = do_html_to_seg($text);
