@@ -18,7 +18,7 @@ function change_it($text, $title)
 
     $title2 = str_replace("/", "%2F", $title);
     // $title2 = str_replace(" ", "_", $title2);
-    $url = "https://en.wikipedia.org/w/rest.php/v1/transform/wikitext/to/html/$title";
+    $url = "https://en.wikipedia.org/w/rest.php/v1/transform/wikitext/to/html/$title2";
 
     $data = ['wikitext' => $text];
     // $response = post_url_params_result($url, $data);
