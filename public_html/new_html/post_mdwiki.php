@@ -43,7 +43,7 @@ function handle_url_request_mdwiki(string $endPoint, string $method = 'GET', arr
     $output = curl_exec($ch);
 
     if ($output === false) {
-        test_print("<br>\ncURL Error: " . curl_error($ch));
+        test_print("<br>endPoint: ($endPoint), cURL Error: " . curl_error($ch));
         curl_close($ch);
         return '';
     }
