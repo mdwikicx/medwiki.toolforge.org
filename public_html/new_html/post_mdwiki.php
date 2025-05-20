@@ -33,10 +33,15 @@ function handle_url_request_mdwiki(string $endPoint, string $method = 'GET', arr
     }
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    // curl_setopt($ch, CURLOPT_COOKIEJAR, "cookie.txt");
     curl_setopt($ch, CURLOPT_USERAGENT, $usr_agent);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
-    curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . '/cacert.pem');
+
+    if (!isset($_GET['cacert'])) {
+        curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . '/cacert.pem');
+        test_print("<br>CURLOPT_CAINFO: cacert.pem");
+    }
 
     test_print($url);
 
