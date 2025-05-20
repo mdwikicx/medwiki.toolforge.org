@@ -16,7 +16,7 @@ function change_it($text, $title)
 {
     $url = "https://en.wikipedia.org/w/rest.php/v1/transform/wikitext/to/html/Sandbox";
 
-    // $title2 = str_replace("/", "%2F", $title);
+    $title2 = str_replace("/", "%2F", $title);
     // $title2 = str_replace(" ", "_", $title2);
     $url = "https://en.wikipedia.org/w/rest.php/v1/transform/wikitext/to/html/$title";
 
@@ -51,6 +51,8 @@ function change_it($text, $title)
 function do_wiki_text_to_html($wikitext, $title)
 {
     // ---
+    $title = str_replace(" ", "_", $title);
+    // ---
     if ($wikitext == '') return "";
     // ---
     $fixed = change_it($wikitext, $title);
@@ -68,8 +70,6 @@ function do_wiki_text_to_html($wikitext, $title)
 
 function wiki_text_to_html($wikitext, $file_html, $title)
 {
-    // ---
-    $title = str_replace(" ", "_", $title);
     // ---
     $text = read_file($file_html);
     // ---
