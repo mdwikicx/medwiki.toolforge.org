@@ -1,0 +1,55 @@
+<?php
+
+namespace NewHtml\FileHelps;
+
+/*
+use:
+use function NewHtml\FileHelps\get_file_dir;
+use function NewHtml\FileHelps\file_write;
+use function NewHtml\FileHelps\read_file;
+*/
+
+function get_file_dir($revision, $all)
+{
+    // ---
+    $file_dir = __DIR__ . "/revisions_new/$revision";
+    // ---
+    if ($all != '') $file_dir .= "_all";
+    // ---
+    if (!is_dir($file_dir)) {
+        if (!mkdir($file_dir, 0777, true)) {
+            test_print(sprintf('Failed to create directory "%s".', $file_dir));
+        }
+    }
+    // ---
+    return $file_dir;
+}
+
+function file_write($file, $text)
+{
+    if (empty($text) || empty($file)) {
+        return;
+    }
+    // ---
+    try {
+        file_put_contents($file, $text);
+    } catch (\Exception $e) {
+        test_print("Error: Could not write to file: $file");
+    }
+}
+
+function read_file($file)
+{
+    // ---
+    if (!file_exists($file)) {
+        return "";
+    }
+    // ---
+    try {
+        return file_get_contents($file);
+    } catch (\Exception $e) {
+        test_print("Error: Could not read file: $file");
+    }
+    // ---
+    return "";
+}

@@ -40,7 +40,7 @@ function handle_url_request_mdwiki(string $endPoint, string $method = 'GET', arr
 
     if (!isset($_GET['cacert'])) {
         curl_setopt($ch, CURLOPT_CAINFO, __DIR__ . '/cacert.pem');
-        test_print("<br>CURLOPT_CAINFO: cacert.pem");
+        test_print("CURLOPT_CAINFO: cacert.pem");
     }
 
     test_print($url);
@@ -48,7 +48,7 @@ function handle_url_request_mdwiki(string $endPoint, string $method = 'GET', arr
     $output = curl_exec($ch);
 
     if ($output === false) {
-        test_print("<br>endPoint: ($endPoint), cURL Error: " . curl_error($ch));
+        test_print("endPoint: ($endPoint), cURL Error: " . curl_error($ch));
         curl_close($ch);
         return '';
     }

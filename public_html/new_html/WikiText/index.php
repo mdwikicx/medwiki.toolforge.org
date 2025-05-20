@@ -11,6 +11,7 @@ use function PostMdwiki\handle_url_request_mdwiki;
 // use function Post\post_url_params_result;
 use function FixText\fix_wikitext;
 use function Lead\get_lead_section;
+use function NewHtml\JsonData\add_title_revision;
 
 function get_wikitext_from_mdwiki_api($title)
 {
@@ -95,6 +96,10 @@ function get_wikitext($title, $all)
     if ($source == "") {
         test_print("wikitext empty!.");
     };
+    // ---
+    if (!empty($revid)) {
+        add_title_revision($title, $revid, $all);
+    }
     // ---
     return [$source, $revid];
 }

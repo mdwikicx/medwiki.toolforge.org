@@ -110,6 +110,8 @@ function fix_link_red($html)
 function remove_data_parsoid($html)
 {
     // ---
+    if (empty($html)) return "";
+    // ---
     // replace all ( data-parsoid="{}")
     $html = preg_replace("/( data-parsoid=\"{}\")/is", '', $html);
     $html = preg_replace("/( data-parsoid=\'[^\']+\')/is", '', $html);

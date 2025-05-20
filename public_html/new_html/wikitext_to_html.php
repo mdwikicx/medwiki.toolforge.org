@@ -9,6 +9,8 @@ use function Post\handle_url_request;
 // use function Post\post_url_params_result;
 use function HtmlFixes\fix_link_red;
 use function HtmlFixes\del_div_error;
+use function NewHtml\FileHelps\file_write; // file_write($file_html, $result);
+use function NewHtml\FileHelps\read_file;
 
 function change_it($text, $title)
 {
@@ -49,18 +51,14 @@ function change_it($text, $title)
 function do_wiki_text_to_html($wikitext, $title)
 {
     // ---
-    if ($wikitext == '') {
-        return "";
-    }
+    if ($wikitext == '') return "";
     // ---
     $fixed = change_it($wikitext, $title);
     // ---
     $error  = $fixed['error'] ?? '';
     $result = $fixed['result'] ?? '';
     // ---
-    if ($result == '') {
-        return "";
-    }
+    if ($result == '') return "";
     // ---
     $result = del_div_error($result);
     $result = fix_link_red($result);
@@ -73,28 +71,17 @@ function wiki_text_to_html($wikitext, $file_html, $title)
     // ---
     $title = str_replace(" ", "_", $title);
     // ---
-    if (file_exists($file_html)) {
-        $HTML_text = file_get_contents($file_html);
-        if ($HTML_text != '') {
-            return $HTML_text;
-        }
-    }
+    $text = read_file($file_html);
     // ---
-    if ($wikitext == '') {
-        return "";
-    }
+    if ($text != '') return $text;
+    // ---
+    if ($wikitext == '') return "";
     // ---
     $result = do_wiki_text_to_html($wikitext, $title);
     // ---
-    if ($result == '') {
-        return "";
-    }
+    if ($result == '') return "";
     // ---
-    try {
-        file_put_contents($file_html, $result);
-    } catch (\Exception $e) {
-        test_print("Error: Could not write to file: $file_html");
-    }
+    file_write($file_html, $result);
     // ---
     return $result;
 }
