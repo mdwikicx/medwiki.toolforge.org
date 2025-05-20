@@ -6,6 +6,8 @@ use function Segments\html_to_seg;
 */
 
 use function Post\handle_url_request;
+use function NewHtml\FileHelps\file_write;
+use function NewHtml\FileHelps\read_file;
 // use function Post\post_url_params_result;
 
 function change_html_to_seg($text)
@@ -47,9 +49,7 @@ function do_html_to_seg($text)
     // $result = str_replace("https://medwiki.toolforge.org/w/", "https://en.wikipedia.org/w/", $result);
     // $result = str_replace("https://medwiki.toolforge.org/wiki/", "https://en.wikipedia.org/wiki/", $result);
     // ---
-    if ($result == '') {
-        return "";
-    }
+    if ($result == 'Content for translate is not given or is empty') return "";
     // ---
     return $result;
 }
@@ -57,24 +57,17 @@ function do_html_to_seg($text)
 function html_to_seg($text, $file_seg)
 {
     // ---
-    if (file_exists($file_seg)) {
-        $text = file_get_contents($file_seg);
-        if ($text != '') {
-            return $text;
-        }
+    $seg_text = read_file($file_seg);
+    // ---
+    if ($seg_text != '') {
+        return $seg_text;
     }
     // ---
     $result = do_html_to_seg($text);
     // ---
-    if ($result == '') {
-        return "";
-    }
+    if ($result == '') return "";
     // ---
-    try {
-        file_put_contents($file_seg, $result);
-    } catch (\Exception $e) {
-        test_print("Error: Could not write to file: $file_seg");
-    }
+    file_write($file_seg, $result);
     // ---
     return $result;
 }

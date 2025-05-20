@@ -7,9 +7,11 @@ use function Wikitext\get_wikitext;
 */
 
 use function Post\handle_url_request;
+use function PostMdwiki\handle_url_request_mdwiki;
 // use function Post\post_url_params_result;
 use function FixText\fix_wikitext;
 use function Lead\get_lead_section;
+use function NewHtml\JsonData\add_title_revision;
 
 function get_wikitext_from_mdwiki_api($title)
 {
@@ -25,7 +27,7 @@ function get_wikitext_from_mdwiki_api($title)
     $url = "https://mdwiki.org/w/api.php";
 
     // $req = post_url_params_result($url, $params);
-    $req = handle_url_request($url, 'GET', $params);
+    $req = handle_url_request_mdwiki($url, 'GET', $params);
 
     if ($req === false) {
         test_print("Failed to fetch data from MDWiki API for title: $title");
@@ -54,7 +56,7 @@ function get_wikitext_from_mdwiki_restapi($title)
     $url = "https://mdwiki.org/w/rest.php/v1/page/" . $title2;
 
     // $req = post_url_params_result($url);
-    $req = handle_url_request($url, 'GET');
+    $req = handle_url_request_mdwiki($url, 'GET');
     $json1 = json_decode($req, true);
 
     $source = $json1["source"] ?? '';
@@ -94,6 +96,10 @@ function get_wikitext($title, $all)
     if ($source == "") {
         test_print("wikitext empty!.");
     };
+    // ---
+    if (!empty($revid)) {
+        add_title_revision($title, $revid, $all);
+    }
     // ---
     return [$source, $revid];
 }

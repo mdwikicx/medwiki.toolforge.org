@@ -26,6 +26,12 @@
 </head>
 
 <?php
+require_once __DIR__ . "/file_helps.php";
+require_once __DIR__ . "/jsons_data/json_data.php";
+
+use function NewHtml\FileHelps\file_write;
+use function NewHtml\JsonData\get_Data;
+
 // Enable error reporting for debugging
 if (isset($_REQUEST['test'])) {
     ini_set('display_errors', 1);
@@ -59,6 +65,11 @@ $number = 0;
 $main_url = $_SERVER['REQUEST_URI'];
 $main_url = str_replace('/revisions_new.php', '', $main_url);
 // ---
+$main_data = get_Data('');
+$main_data_all = get_Data('all');
+// ---
+$make_dump = empty($main_data);
+// ---
 foreach ($dirs as $dir) {
     // ---
     $number += 1;
@@ -80,7 +91,22 @@ foreach ($dirs as $dir) {
     $seg_tag = make_badge($files, 'seg.html');
     // ---
     $title = (is_file("$dir/title.txt")) ? file_get_contents("$dir/title.txt") : '';
+    // ---
+    if (!empty($title) && $make_dump && !empty($oldid_number)) {
+        $id = (int)$oldid_number ?? 0;
+        if ($id > 0) {
+            if (strpos($dir_path, '_all') !== false) {
+                $main_data_all[$title] = $id;
+            } else {
+                $main_data[$title] = $id;
+            }
+        }
+    }
+    // ---
     $title = htmlspecialchars($title);
+    // ---
+    $url = "$main_url/revisions_new/$dir_path";
+    $url = "open.php?revid=$dir_path&file";
     // ---
     $tbody .= <<<HTML
         <tr>
@@ -93,16 +119,21 @@ foreach ($dirs as $dir) {
                 <a class="card-link" href="https://mdwiki.org/wiki/index.php?oldid=$oldid_number" target="_blank">$dir_path</a>
             </td>
             <td>
-                <a class="card-link" href="$main_url/revisions_new/$dir_path/wikitext.txt" target="_blank">Wikitext</a> $wikitext_tag
+                <a class="card-link" href="$url=wikitext.txt" target="_blank">Wikitext</a> $wikitext_tag
             </td>
             <td>
-                <a class="card-link" href="$main_url/revisions_new/$dir_path/html.html" target="_blank">Html</a> $html_tag
+                <a class="card-link" href="$url=html.html" target="_blank">Html</a> $html_tag
             </td>
             <td>
-                <a class="card-link" href="$main_url/revisions_new/$dir_path/seg.html" target="_blank">Segments</a> $seg_tag
+                <a class="card-link" href="$url=seg.html" target="_blank">Segments</a> $seg_tag
             </td>
         </tr>
     HTML;
+}
+// ---
+if ($make_dump) {
+    file_write(__DIR__ . '/jsons_data/json_data.json', json_encode($main_data, JSON_PRETTY_PRINT));
+    file_write(__DIR__ . '/jsons_data/json_data_all.json', json_encode($main_data_all, JSON_PRETTY_PRINT));
 }
 // ---
 ?>

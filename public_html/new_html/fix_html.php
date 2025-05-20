@@ -5,6 +5,7 @@ namespace HtmlFixes;
 
 use function HtmlFixes\del_div_error;
 use function HtmlFixes\fix_link_red;
+use function HtmlFixes\remove_data_parsoid;
 
 */
 // <div([^\/>]*?)>(.+?)<\/div>
@@ -50,6 +51,8 @@ function fix_link_red($html)
 
     preg_match_all("/<a([^>]*?)>(.+?)<\/a>/is", $html, $matches);
     // ---
+    $attrs_to_del = ['typeof', 'data-mw-i18n', 'class'];
+    // ---
     foreach ($matches[1] as $key => $options) {
         $content = $matches[2][$key];
         $cite_text = $matches[0][$key];
@@ -61,6 +64,8 @@ function fix_link_red($html)
             $html = str_replace($cite_text, '', $html);
             continue;
         }
+        // ---
+        // data-parsoid="{}"
         // ---
         if (preg_match("/mw:LocalizedAttrs/is", $options)) {
             // ---
@@ -75,7 +80,6 @@ function fix_link_red($html)
                 // ---
                 $attrs['href'] = $newHref;
                 // ---
-                $attrs_to_del = ['typeof', 'data-mw-i18n', 'class'];
 
                 foreach ($attrs_to_del as $attr) {
                     if (isset($attrs[$attr])) {
@@ -83,6 +87,52 @@ function fix_link_red($html)
                     }
                 }
                 // ---
+            }
+            // ---
+            $new_attrs = implode(' ', array_map(
+                function ($key, $value) {
+                    return "$key=$value";
+                },
+                array_keys($attrs),
+                array_values($attrs)
+            ));
+            // ---
+            $new_cite_text = "<a $new_attrs>$content</a>";
+            // ---
+            $html = str_replace($cite_text, $new_cite_text, $html);
+        }
+    }
+    // ---
+    return $html;
+}
+
+
+function remove_data_parsoid($html)
+{
+    // ---
+    if (empty($html)) return "";
+    // ---
+    // replace all ( data-parsoid="{}")
+    $html = preg_replace("/( data-parsoid=\"{}\")/is", '', $html);
+    $html = preg_replace("/( data-parsoid=\'[^\']+\')/is", '', $html);
+    $html = preg_replace("/( data-parsoid=\"[^\"]+\")/is", '', $html);
+    // ---
+    preg_match_all("/<a([^>]*?)>(.+?)<\/a>/is", $html, $matches);
+    // ---
+    $attrs_to_del = ['data-parsoid'];
+    // ---
+    foreach ($matches[1] as $key => $options) {
+        $content = $matches[2][$key];
+        $cite_text = $matches[0][$key];
+        // ---
+        if (preg_match("/data-parsoid/is", $options)) {
+            // ---
+            $attrs = get_attrs($options);
+            // ---
+            foreach ($attrs_to_del as $attr) {
+                if (isset($attrs[$attr])) {
+                    unset($attrs[$attr]);
+                }
             }
             // ---
             $new_attrs = implode(' ', array_map(

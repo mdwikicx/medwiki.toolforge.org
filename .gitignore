@@ -14,3 +14,6 @@ public_html/post.php
 public_html/index.php
 /public_html/new_html/revisions_new
 public_html/web.config.1
+public_html/mw/LocalSettings.php
+public_html/new_html/cacert.pem
+public_html/new_html/jsons_data/*.json
