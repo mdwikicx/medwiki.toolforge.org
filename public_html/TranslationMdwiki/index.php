@@ -2,43 +2,84 @@
 
 <html lang="ar" dir="rtl">
 
+<?php
+function get_host()
+{
+	// $hoste = get_host();
+	//---
+	static $cached_host = null;
+
+	if ($cached_host !== null) {
+		return $cached_host; // استخدم القيمة المحفوظة
+	}
+
+	//---
+	$hoste = ($_SERVER["SERVER_NAME"] == "localhost")
+		? "https://cdnjs.cloudflare.com"
+		: "https://tools-static.wmflabs.org/cdnjs";
+	//---
+	if ($hoste == "https://tools-static.wmflabs.org/cdnjs") {
+		$url = "https://tools-static.wmflabs.org";
+		$ch = curl_init($url);
+		curl_setopt($ch, CURLOPT_HEADER, true);
+		curl_setopt($ch, CURLOPT_NOBODY, true); // لا نريد تحميل الجسم
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // لمنع الطباعة
+		curl_setopt($ch, CURLOPT_TIMEOUT, 3); // المهلة القصوى للاتصال
+
+		$result = curl_exec($ch);
+		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		curl_close($ch);
+
+		// إذا فشل الاتصال أو لم تكن الاستجابة ضمن 200–399، نستخدم cdnjs
+		if ($result === false || $httpCode < 200 || $httpCode >= 400) {
+			$hoste = "https://cdnjs.cloudflare.com";
+		}
+	}
+
+	$cached_host = $hoste;
+
+	return $hoste;
+}
+$hoste = get_host();
+
+echo <<<HTML
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>أداة اختبار ترجمة MDWiki</title>
 
-	<link rel='stylesheet' href='https://tools-static.wmflabs.org/cdnjs/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css'>
-	<link rel='stylesheet' href='https://tools-static.wmflabs.org/cdnjs/ajax/libs/bootstrap-select/1.14.0-beta3/css/bootstrap-select.css'>
-	<script src='https://tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/3.7.0/jquery.min.js'></script>
-	<script src='https://tools-static.wmflabs.org/cdnjs/ajax/libs/popper.js/2.11.8/umd/popper.min.js'></script>
-	<script src='https://tools-static.wmflabs.org/cdnjs/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js'></script>
-	<script src='https://tools-static.wmflabs.org/cdnjs/ajax/libs/bootstrap-select/1.14.0-beta3/js/bootstrap-select.min.js'></script>
+	<link rel='stylesheet' href='$hoste/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css'>
+	<link rel='stylesheet' href='$hoste/ajax/libs/bootstrap-select/1.14.0-beta3/css/bootstrap-select.css'>
+	<script src='$hoste/ajax/libs/jquery/3.7.0/jquery.min.js'></script>
+	<script src='$hoste/ajax/libs/popper.js/2.11.8/umd/popper.min.js'></script>
+	<script src='$hoste/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js'></script>
+	<script src='$hoste/ajax/libs/bootstrap-select/1.14.0-beta3/js/bootstrap-select.min.js'></script>
 
 	<script>
 		const mw = {
 			cx: {}
 		};
 	</script>
-	<?php
-
-	$js = $_GET['js'] ?? "local";
-	// ---
-	$js_list = [
-		"local" => "mw.cx.TranslationMdwiki.js",
-		"mdwikicx" => "https://mdwikicx.toolforge.org/w/extensions/ContentTranslation/modules/mw.cx.TranslationMdwiki.js",
-		"medwiki" => "https://medwiki.toolforge.org/w/extensions/ContentTranslation/modules/mw.cx.TranslationMdwiki.js",
-	];
-	// ---
-	// list of js files in the same directory using glob
-	foreach (glob("*.js") as $file) {
-		if ($file == "mw.cx.TranslationMdwiki.js") continue;
-		$js_list["local: $file"] = $file;
-	}
-	// ---
-	if (isset($js_list[$js])) {
-		echo "<script src='$js_list[$js]'></script>";
-	}
-	?>
+HTML;
+// ---
+$js = $_GET['js'] ?? "local";
+// ---
+$js_list = [
+	"local" => "mw.cx.TranslationMdwiki.js",
+	"mdwikicx" => "https://mdwikicx.toolforge.org/w/extensions/ContentTranslation/modules/mw.cx.TranslationMdwiki.js",
+	"medwiki" => "https://medwiki.toolforge.org/w/extensions/ContentTranslation/modules/mw.cx.TranslationMdwiki.js",
+];
+// ---
+// list of js files in the same directory using glob
+foreach (glob("*.js") as $file) {
+	if ($file == "mw.cx.TranslationMdwiki.js") continue;
+	$js_list["local: $file"] = $file;
+}
+// ---
+if (isset($js_list[$js])) {
+	echo "<script src='$js_list[$js]'></script>";
+}
+?>
 
 </head>
 

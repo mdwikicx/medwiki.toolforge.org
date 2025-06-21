@@ -1,31 +1,71 @@
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Articles</title>
-    <link rel='stylesheet' href='https://tools-static.wmflabs.org/cdnjs/ajax/libs/font-awesome/5.15.3/css/all.min.css'>
-    <link rel='stylesheet' href='https://tools-static.wmflabs.org/cdnjs/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css'>
-    <link rel='stylesheet' href='https://tools-static.wmflabs.org/cdnjs/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css'>
-    <link rel='stylesheet' href='https://tools-static.wmflabs.org/cdnjs/ajax/libs/bootstrap-select/1.14.0-beta3/css/bootstrap-select.css'>
-    <link rel='stylesheet' href='https://tools-static.wmflabs.org/cdnjs/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css'>
-    <link rel='stylesheet' href='https://tools-static.wmflabs.org/cdnjs/ajax/libs/datatables.net-bs5/2.2.2/dataTables.bootstrap5.css'>
-
-    <script src='https://tools-static.wmflabs.org/cdnjs/ajax/libs/jquery/3.7.0/jquery.min.js'></script>
-    <script src='https://tools-static.wmflabs.org/cdnjs/ajax/libs/popper.js/2.11.8/umd/popper.min.js'></script>
-    <script src='https://tools-static.wmflabs.org/cdnjs/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js'></script>
-    <script src='https://tools-static.wmflabs.org/cdnjs/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js'></script>
-    <script src='https://tools-static.wmflabs.org/cdnjs/ajax/libs/bootstrap-select/1.14.0-beta3/js/bootstrap-select.min.js'></script>
-    <script src='https://tools-static.wmflabs.org/cdnjs/ajax/libs/datatables.net/2.2.2/dataTables.js'></script>
-    <script src='https://tools-static.wmflabs.org/cdnjs/ajax/libs/datatables.net-bs5/2.2.2/dataTables.bootstrap5.min.js'></script>
-    <style>
-        a {
-            text-decoration: none;
-        }
-    </style>
-</head>
-
 <?php
+function get_host()
+{
+    // $hoste = get_host();
+    //---
+    static $cached_host = null;
+
+    if ($cached_host !== null) {
+        return $cached_host; // استخدم القيمة المحفوظة
+    }
+
+    //---
+    $hoste = ($_SERVER["SERVER_NAME"] == "localhost")
+        ? "https://cdnjs.cloudflare.com"
+        : "https://tools-static.wmflabs.org/cdnjs";
+    //---
+    if ($hoste == "https://tools-static.wmflabs.org/cdnjs") {
+        $url = "https://tools-static.wmflabs.org";
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_HEADER, true);
+        curl_setopt($ch, CURLOPT_NOBODY, true); // لا نريد تحميل الجسم
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // لمنع الطباعة
+        curl_setopt($ch, CURLOPT_TIMEOUT, 3); // المهلة القصوى للاتصال
+
+        $result = curl_exec($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_close($ch);
+
+        // إذا فشل الاتصال أو لم تكن الاستجابة ضمن 200–399، نستخدم cdnjs
+        if ($result === false || $httpCode < 200 || $httpCode >= 400) {
+            $hoste = "https://cdnjs.cloudflare.com";
+        }
+    }
+
+    $cached_host = $hoste;
+
+    return $hoste;
+}
+$hoste = get_host();
+
+echo <<<HTML
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Articles</title>
+        <link rel='stylesheet' href='$hoste/ajax/libs/font-awesome/5.15.3/css/all.min.css'>
+        <link rel='stylesheet' href='$hoste/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css'>
+        <link rel='stylesheet' href='$hoste/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css'>
+        <link rel='stylesheet' href='$hoste/ajax/libs/bootstrap-select/1.14.0-beta3/css/bootstrap-select.css'>
+        <link rel='stylesheet' href='$hoste/ajax/libs/bootstrap-icons/1.11.3/font/bootstrap-icons.min.css'>
+        <link rel='stylesheet' href='$hoste/ajax/libs/datatables.net-bs5/2.2.2/dataTables.bootstrap5.css'>
+
+        <script src='$hoste/ajax/libs/jquery/3.7.0/jquery.min.js'></script>
+        <script src='$hoste/ajax/libs/popper.js/2.11.8/umd/popper.min.js'></script>
+        <script src='$hoste/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js'></script>
+        <script src='$hoste/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js'></script>
+        <script src='$hoste/ajax/libs/bootstrap-select/1.14.0-beta3/js/bootstrap-select.min.js'></script>
+        <script src='$hoste/ajax/libs/datatables.net/2.2.2/dataTables.js'></script>
+        <script src='$hoste/ajax/libs/datatables.net-bs5/2.2.2/dataTables.bootstrap5.min.js'></script>
+        <style>
+            a {
+                text-decoration: none;
+            }
+        </style>
+    </head>
+HTML;
 require_once __DIR__ . "/file_helps.php";
 require_once __DIR__ . "/jsons_data/json_data.php";
 
