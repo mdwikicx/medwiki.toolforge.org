@@ -3,6 +3,7 @@
 <html lang="ar" dir="rtl">
 
 <?php
+
 function get_host()
 {
 	// $hoste = get_host();
