@@ -73,7 +73,7 @@ function get_full_refs($text)
 
 function getShortCitations($text)
 {
-    preg_match_all("/<ref([^\/>]*?)\/\s*>/is", $text, $matches);
+    preg_match_all("/<ref ([^\/>]*?)\/\s*>/is", $text, $matches);
     // ---
     $citations = [];
     // ---

@@ -7,7 +7,7 @@ if (isset($_GET['test'])) {
 }
 function test_print($str)
 {
-    if (isset($_GET['test'])) {
+    if (isset($_GET['test']) || defined('DEBUGX')) {
         echo $str;
         echo "\n";
     }
