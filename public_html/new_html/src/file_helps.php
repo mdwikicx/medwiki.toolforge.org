@@ -12,7 +12,7 @@ use function NewHtml\FileHelps\read_file;
 function get_file_dir($revision, $all)
 {
     // ---
-    $file_dir = __DIR__ . "/revisions_new/$revision";
+    $file_dir = __DIR__ . "/../revisions_new/$revision";
     // ---
     if ($all != '') $file_dir .= "_all";
     // ---
