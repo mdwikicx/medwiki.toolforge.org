@@ -39,7 +39,7 @@ function handle_url_request_mdwiki(string $endPoint, string $method = 'GET', arr
     curl_setopt($ch, CURLOPT_TIMEOUT, 15);
 
     if (!isset($_GET['cacert'])) {
-        $caFile = __DIR__ . '/cacert.pem';
+        $caFile = __DIR__ . '/../cacert.pem';
         // ---
         if (file_exists($caFile)) {
             curl_setopt($ch, CURLOPT_CAINFO, $caFile);
