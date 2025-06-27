@@ -86,7 +86,10 @@ function get_wikitext($title, $all)
     // ---
     if ($source != '') {
         // ---
+        test_print("source is not empty\n");
+        // ---
         if ($all == '') {
+            test_print("get_lead_section: \n");
             $source = get_lead_section($source);
         }
         // ---

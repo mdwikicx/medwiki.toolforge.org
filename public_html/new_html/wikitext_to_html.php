@@ -71,9 +71,12 @@ function do_wiki_text_to_html($wikitext, $title)
 function wiki_text_to_html($wikitext, $file_html, $title)
 {
     // ---
-    $text = read_file($file_html);
-    // ---
-    if ($text != '') return $text;
+    if (!isset($_GET['new'])) {
+        // ---
+        $text = read_file($file_html);
+        // ---
+        if ($text != '') return $text;
+    }
     // ---
     if ($wikitext == '') return "";
     // ---

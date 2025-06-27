@@ -22,6 +22,7 @@ function get_lead_section($wikitext)
     }
 
     $lead .= "\n==References==\n<references />";
+
     $lead = refs_expend_work($lead, $wikitext);
 
     return $lead;
