@@ -86,7 +86,7 @@ use function NewHtml\FileHelps\file_write;
 use function NewHtml\JsonData\get_Data;
 
 // Enable error reporting for debugging
-if (isset($_REQUEST['test'])) {
+if (isset($_GET['test']) || isset($_COOKIE['test'])) {
     ini_set('display_errors', 1);
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
