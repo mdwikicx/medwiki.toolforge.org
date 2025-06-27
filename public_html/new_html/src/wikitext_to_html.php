@@ -71,20 +71,22 @@ function do_wiki_text_to_html($wikitext, $title)
 function wiki_text_to_html($wikitext, $file_html, $title)
 {
     // ---
+    $from_cache = false;
+    // ---
     if (!isset($_GET['new'])) {
         // ---
         $text = read_file($file_html);
         // ---
-        if ($text != '') return $text;
+        if ($text != '') return [$text, true];
     }
     // ---
-    if ($wikitext == '') return "";
+    if ($wikitext == '') return ["", $from_cache];
     // ---
     $result = do_wiki_text_to_html($wikitext, $title);
     // ---
-    if ($result == '') return "";
+    if ($result == '') return ["", $from_cache];
     // ---
     file_write($file_html, $result);
     // ---
-    return $result;
+    return [$result, $from_cache];
 }

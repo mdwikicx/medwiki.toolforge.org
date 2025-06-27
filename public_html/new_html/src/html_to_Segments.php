@@ -57,19 +57,21 @@ function do_html_to_seg($text)
 function html_to_seg($text, $file_seg)
 {
     // ---
+    $from_cache = false;
+    // ---
     if (!isset($_GET['new'])) {
         $seg_text = read_file($file_seg);
         // ---
         if ($seg_text != '') {
-            return $seg_text;
+            return [$seg_text, true];
         }
     }
     // ---
     $result = do_html_to_seg($text);
     // ---
-    if ($result == '') return "";
+    if ($result == '') return ["", $from_cache];
     // ---
     file_write($file_seg, $result);
     // ---
-    return $result;
+    return [$result, $from_cache];
 }
