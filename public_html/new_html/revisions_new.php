@@ -127,7 +127,7 @@ foreach ($dirs as $dir) {
     // ---
     $number += 1;
     // ---
-    $lastModified = date('Y-m-d H:i', filemtime($dir));
+    $lastModified = date('Y-m-d H:i', filemtime($dir . '/wikitext.txt'));
     // ---
     $dir = rtrim($dir, '/');
     // ---
