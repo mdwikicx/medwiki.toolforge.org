@@ -79,18 +79,12 @@ echo <<<HTML
         </style>
     </head>
 HTML;
+
 require_once __DIR__ . "/src/file_helps.php";
 require_once __DIR__ . "/jsons_data/json_data.php";
 
 use function NewHtml\FileHelps\file_write;
 use function NewHtml\JsonData\get_Data;
-
-// Enable error reporting for debugging
-if (isset($_REQUEST['test'])) {
-    ini_set('display_errors', 1);
-    ini_set('display_startup_errors', 1);
-    error_reporting(E_ALL);
-}
 
 function make_badge($files, $file)
 {
@@ -108,7 +102,9 @@ $mainDir = __DIR__ . '/revisions_new/';
 $dirs = array_filter(glob(__DIR__ . '/revisions_new/*/'), 'is_dir');
 // sort directories by last modified date
 usort($dirs, function ($a, $b) {
-    return filemtime($b) - filemtime($a);
+    $timeA = is_file($a . '/wikitext.txt') ? filemtime($a . '/wikitext.txt') : filemtime($a);
+    $timeB = is_file($b . '/wikitext.txt') ? filemtime($b . '/wikitext.txt') : filemtime($b);
+    return $timeB - $timeA;
 });
 // ---
 $tbody = '';
@@ -127,7 +123,10 @@ foreach ($dirs as $dir) {
     // ---
     $number += 1;
     // ---
-    $lastModified = date('Y-m-d H:i', filemtime($dir));
+    $wikitextFile = $dir . '/wikitext.txt';
+    $lastModified = is_file($wikitextFile)
+        ? date('Y-m-d H:i', filemtime($wikitextFile))
+        : date('Y-m-d H:i', filemtime($dir));
     // ---
     $dir = rtrim($dir, '/');
     // ---
@@ -145,6 +144,8 @@ foreach ($dirs as $dir) {
     // ---
     $title = (is_file("$dir/title.txt")) ? file_get_contents("$dir/title.txt") : '';
     // ---
+    $title = str_replace('_', ' ', $title);
+    // ---
     if (!empty($title) && $make_dump && !empty($oldid_number)) {
         $id = (int)$oldid_number ?? 0;
         if ($id > 0) {
@@ -161,6 +162,12 @@ foreach ($dirs as $dir) {
     $url = "$main_url/revisions_new/$dir_path";
     $url = "open.php?revid=$dir_path&file";
     // ---
+    $re_create_td = (isset($_GET['re'])) ? <<<HTML
+        <td>
+            <a class="card-link" href="/new_html/index.php?new=1&title=$title" target="_blank">Re create</a>
+        </td>
+    HTML : "";
+    // ---
     $tbody .= <<<HTML
         <tr>
             <td>$number</td>
@@ -168,6 +175,7 @@ foreach ($dirs as $dir) {
             <td>
                 <a class="card-link" href="https://mdwiki.org/wiki/index.php?title=$title" target="_blank">$title</a>
             </td>
+            $re_create_td
             <td>
                 <a class="card-link" href="https://mdwiki.org/wiki/index.php?oldid=$oldid_number" target="_blank">$dir_path</a>
             </td>
@@ -188,6 +196,8 @@ if ($make_dump) {
     file_write(__DIR__ . '/jsons_data/json_data.json', json_encode($main_data, JSON_PRETTY_PRINT));
     file_write(__DIR__ . '/jsons_data/json_data_all.json', json_encode($main_data_all, JSON_PRETTY_PRINT));
 }
+// ---
+$re_create_th = (isset($_GET['re'])) ? "<th>Re create</th>" : '';
 // ---
 ?>
 
@@ -224,6 +234,7 @@ if ($make_dump) {
                             <th>#</th>
                             <th>lastModified</th>
                             <th>Title</th>
+                            <?php echo $re_create_th; ?>
                             <th>Revision</th>
                             <th>Wikitext</th>
                             <th>Html</th>

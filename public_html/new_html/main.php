@@ -60,12 +60,15 @@ function get_wikitext_revision($title, $all)
 {
     global $printetxt;
     // ---
+    $from_cache = false;
+    // ---
     // test_print("title: $title, all: $all, printetxt: $printetxt");
     // ---
     [$wikitext, $revision] = get_wikitext($title, $all);
     // ---
     if ($wikitext == '' || $revision == '') {
         [$wikitext, $revision] = get_from_json($title, $all);
+        $from_cache = $wikitext != '';
     }
     // ---
     if ($printetxt == "wikitext") {
@@ -74,16 +77,19 @@ function get_wikitext_revision($title, $all)
         exit();
     }
     // ---
-    return [$wikitext, $revision];
+    return [$wikitext, $revision, $from_cache];
 }
 
 function get_HTML_text($wikitext, $file_html, $title)
 {
     global $printetxt;
     // ---
+    $from_cache = false;
+    // ---
     try {
         // ---
-        $HTML_text = wiki_text_to_html($wikitext, $file_html, $title);
+        [$HTML_text, $from_cache] = wiki_text_to_html($wikitext, $file_html, $title);
+        // ---
         $HTML_text = remove_data_parsoid($HTML_text);
     } catch (Exception $e) {
         test_print("HTML generation failed for title: $title. Error: " . $e->getMessage());
@@ -101,17 +107,19 @@ function get_HTML_text($wikitext, $file_html, $title)
         exit();
     }
     // ---
-    return $HTML_text;
+    return [$HTML_text, $from_cache];
 }
 
 function get_SEG_text($HTML_text, $file_seg)
 {
     global $printetxt;
     // ---
+    $from_cache = false;
     $SEG_text = "";
     // ---
     if (!empty($HTML_text)) {
-        $SEG_text = html_to_seg($HTML_text, $file_seg);
+        [$SEG_text, $from_cache] = html_to_seg($HTML_text, $file_seg);
+        // ---
         $SEG_text = remove_data_parsoid($SEG_text);
     }
     // ---
@@ -121,7 +129,7 @@ function get_SEG_text($HTML_text, $file_seg)
         exit();
     }
     // ---
-    return $SEG_text;
+    return [$SEG_text, $from_cache];
 }
 
 function start($request, $title)
@@ -133,7 +141,15 @@ function start($request, $title)
         $all = "1";
     }
     // ---
-    [$wikitext, $revision] = get_wikitext_revision($title, $all);
+    $cache_data = [
+        'wikitext' => false,
+        'html' => false,
+        'seg' => false
+    ];
+    // ---
+    [$wikitext, $revision, $text_cache] = get_wikitext_revision($title, $all);
+    // ---
+    $cache_data['wikitext'] = $text_cache;
     // ---
     // $revision = (isset($request['revision'])) ? $request['revision'] : $revision;
     // ---
@@ -152,12 +168,16 @@ function start($request, $title)
     // ---
     file_write($file_title, $title);
     // ---
-    $HTML_text = get_HTML_text($wikitext, $file_html, $title);
+    [$HTML_text, $html_cache] = get_HTML_text($wikitext, $file_html, $title);
+    // ---
+    $cache_data['html'] = $html_cache;
     // ---
     $SEG_text = "";
     // ---
     // print_data($revision, $SEG_text, $sourcelanguage, $title, $error = $error);
     $jsonData = [
+
+        "cache_data" => $cache_data,
         "sourceLanguage" => "en",
         "title" => $title,
         "revision" => $revision,
@@ -169,7 +189,9 @@ function start($request, $title)
         $jsonData['error_type'] = "HTML_text:() is empty";
         $jsonData['error'] = "No content found";
     } else {
-        $SEG_text = get_SEG_text($HTML_text, $file_seg);
+        [$SEG_text, $seg_cache] = get_SEG_text($HTML_text, $file_seg);
+        // ---
+        $jsonData['cache_data']['seg'] = $seg_cache;
         // ---
         $jsonData['segmentedContent'] = $SEG_text;
         // ---
