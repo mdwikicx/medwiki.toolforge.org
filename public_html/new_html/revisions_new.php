@@ -102,7 +102,9 @@ $mainDir = __DIR__ . '/revisions_new/';
 $dirs = array_filter(glob(__DIR__ . '/revisions_new/*/'), 'is_dir');
 // sort directories by last modified date
 usort($dirs, function ($a, $b) {
-    return filemtime($b) - filemtime($a);
+    $timeA = is_file($a . '/wikitext.txt') ? filemtime($a . '/wikitext.txt') : filemtime($a);
+    $timeB = is_file($b . '/wikitext.txt') ? filemtime($b . '/wikitext.txt') : filemtime($b);
+    return $timeB - $timeA;
 });
 // ---
 $tbody = '';
@@ -121,7 +123,10 @@ foreach ($dirs as $dir) {
     // ---
     $number += 1;
     // ---
-    $lastModified = date('Y-m-d H:i', filemtime($dir . '/wikitext.txt'));
+    $wikitextFile = $dir . '/wikitext.txt';
+    $lastModified = is_file($wikitextFile)
+        ? date('Y-m-d H:i', filemtime($wikitextFile))
+        : date('Y-m-d H:i', filemtime($dir));
     // ---
     $dir = rtrim($dir, '/');
     // ---
