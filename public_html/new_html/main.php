@@ -176,6 +176,7 @@ function start($request, $title)
     // ---
     // print_data($revision, $SEG_text, $sourcelanguage, $title, $error = $error);
     $jsonData = [
+
         "cache_data" => $cache_data,
         "sourceLanguage" => "en",
         "title" => $title,
