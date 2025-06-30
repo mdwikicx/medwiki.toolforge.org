@@ -24,6 +24,7 @@ class Template
         $this->name_strip = trim(str_replace('_', ' ', $name));
         $this->parameters = $parameters;
         $this->templateText = $templateText;
+        $this->template = "";
     }
     public function getTemplateText(): string
     {
@@ -96,7 +97,8 @@ class Template
                 if ($ljust > 0) {
                     $key = str_pad($key, $ljust, " ");
                 }
-                $this->template .= $line . "|" . $key . " = " . $value;
+                // $this->template .= $line . "|" . $key . " = " . $value;
+                $this->template .= $line . "|" . $key . "=" . $value;
             }
             $i++;
         }
@@ -175,11 +177,10 @@ class ParserTemplates
     private function find_sub_templates($string)
     {
         preg_match_all("/\{{2}((?>[^\{\}]+)|(?R))*\}{2}/xm", $string, $matches);
-        // echo length of $matches
 
         return $matches;
     }
-    public function parse_sub($text): void
+    private function parse_sub($text): void
     {
         $text_templates = $this->find_sub_templates($text);
         foreach ($text_templates[0] as $text_template) {
@@ -226,6 +227,9 @@ function getTemplate($text)
 
 function getTemplates($text)
 {
+    if (empty($text)) {
+        return [];
+    }
     $parser = new ParserTemplates($text);
     $temps = $parser->getTemplates();
     return $temps;

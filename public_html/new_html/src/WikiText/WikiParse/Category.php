@@ -11,7 +11,7 @@ use function WikiParse\Category\get_categories;
 
 function get_categories($text)
 {
-    // $parser = new ParserCategorys($text);
+    // $parser = new ParserCategories($text);
     // $categories = $parser->getCategories();
     // ---
     $categories = array();
