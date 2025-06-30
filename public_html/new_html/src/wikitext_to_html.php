@@ -11,6 +11,7 @@ use function HtmlFixes\fix_link_red;
 use function HtmlFixes\del_div_error;
 use function NewHtml\FileHelps\file_write; // file_write($file_html, $result);
 use function NewHtml\FileHelps\read_file;
+use function Printn\test_print;
 
 function change_it($text, $title)
 {

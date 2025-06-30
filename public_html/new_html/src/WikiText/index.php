@@ -12,6 +12,7 @@ use function PostMdwiki\handle_url_request_mdwiki;
 use function FixText\fix_wikitext;
 use function Lead\get_lead_section;
 use function NewHtml\JsonData\add_title_revision;
+use function Printn\test_print;
 
 function get_wikitext_from_mdwiki_api($title)
 {
