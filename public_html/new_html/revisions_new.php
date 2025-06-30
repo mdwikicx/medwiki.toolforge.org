@@ -83,8 +83,9 @@ HTML;
 require_once __DIR__ . "/src/file_helps.php";
 require_once __DIR__ . "/jsons_data/json_data.php";
 
-use function NewHtml\FileHelps\file_write;
+use function NewHtml\FileHelps\get_revisions_new_dir;
 use function NewHtml\JsonData\get_Data;
+use function NewHtml\JsonData\dump_both_data;
 
 function make_badge($files, $file)
 {
@@ -97,9 +98,9 @@ function make_badge($files, $file)
     return "";
 }
 // ---
-$mainDir = __DIR__ . '/revisions_new/';
+$revisions_new_dir = get_revisions_new_dir();
 // ---
-$dirs = array_filter(glob(__DIR__ . '/revisions_new/*/'), 'is_dir');
+$dirs = array_filter(glob($revisions_new_dir . '/*/'), 'is_dir');
 // sort directories by last modified date
 usort($dirs, function ($a, $b) {
     $timeA = is_file($a . '/wikitext.txt') ? filemtime($a . '/wikitext.txt') : filemtime($a);
@@ -159,7 +160,6 @@ foreach ($dirs as $dir) {
     // ---
     $title = htmlspecialchars($title);
     // ---
-    $url = "$main_url/revisions_new/$dir_path";
     $url = "open.php?revid=$dir_path&file";
     // ---
     $re_create_td = (isset($_GET['re'])) ? <<<HTML
@@ -193,8 +193,7 @@ foreach ($dirs as $dir) {
 }
 // ---
 if ($make_dump) {
-    file_write(__DIR__ . '/jsons_data/json_data.json', json_encode($main_data, JSON_PRETTY_PRINT));
-    file_write(__DIR__ . '/jsons_data/json_data_all.json', json_encode($main_data_all, JSON_PRETTY_PRINT));
+    dump_both_data($main_data, $main_data_all);
 }
 // ---
 $re_create_th = (isset($_GET['re'])) ? "<th>Re create</th>" : '';

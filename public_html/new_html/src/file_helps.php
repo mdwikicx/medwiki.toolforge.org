@@ -7,18 +7,29 @@ if (isset($_GET['test']) || isset($_COOKIE['test'])) {
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 }
+
 use function Printn\test_print;
 /*
 use:
+use function NewHtml\FileHelps\get_revisions_new_dir;
 use function NewHtml\FileHelps\get_file_dir;
 use function NewHtml\FileHelps\file_write;
 use function NewHtml\FileHelps\read_file;
 */
 
+$revisions_new_dir = dirname(dirname(__DIR__)) . '/revisions_new';
+
+function get_revisions_new_dir()
+{
+    global $revisions_new_dir;
+    return $revisions_new_dir;
+}
+
 function get_file_dir($revision, $all)
 {
+    global $revisions_new_dir;
     // ---
-    $file_dir = __DIR__ . "/../revisions_new/$revision";
+    $file_dir = $revisions_new_dir . "/$revision";
     // ---
     if ($all != '') $file_dir .= "_all";
     // ---

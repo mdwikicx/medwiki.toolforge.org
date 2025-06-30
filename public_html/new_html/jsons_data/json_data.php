@@ -14,11 +14,13 @@ use function NewHtml\JsonData\get_title_revision;
 use function NewHtml\JsonData\add_title_revision;
 use function NewHtml\JsonData\get_from_json;
 use function NewHtml\JsonData\get_Data;
+use function NewHtml\JsonData\dump_both_data;
 */
 
 use function NewHtml\FileHelps\get_file_dir;
 use function NewHtml\FileHelps\file_write;
 use function NewHtml\FileHelps\read_file;
+
 
 $json_file = __DIR__ . "/json_data.json";
 $json_file_all = __DIR__ . "/json_data_all.json";
@@ -31,6 +33,13 @@ if (!file_exists($json_file_all)) {
     file_write($json_file_all, '{}');
 }
 
+function dump_both_data($main_data, $main_data_all)
+{
+    global $json_file_all, $json_file;
+    // ---
+    file_write($json_file, json_encode($main_data, JSON_PRETTY_PRINT));
+    file_write($json_file_all, json_encode($main_data_all, JSON_PRETTY_PRINT));
+}
 function get_Data($tyt)
 {
     global $json_file_all, $json_file;
