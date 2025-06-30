@@ -31,6 +31,7 @@ rm -rf "$CLONE_DIR"/public_html/mdtexts/wikitext
 rm -rf "$CLONE_DIR"/public_html/mdtexts/*.json
 rm -rf "$CLONE_DIR"/public_html/new_html/revisions
 rm -rf "$CLONE_DIR"/public_html/new_html/revisions_new
+rm -rf "$CLONE_DIR"/public_html/revisions_new
 
 # Copy the required files to the target directory
 cp -rf "$CLONE_DIR"/public_html/* "$TARGET_DIR/" -v
