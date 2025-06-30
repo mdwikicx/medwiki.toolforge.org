@@ -15,7 +15,6 @@ class Template
         $this->name_strip = trim(str_replace('_', ' ', $name));
         $this->parameters = $parameters;
         $this->templateText = $templateText;
-        $this->template = "";
     }
     public function getTemplateText(): string
     {
@@ -76,24 +75,56 @@ class Template
 
     public function toString(bool $newLine = false, $ljust = 0): string
     {
-        $line = $newLine ? "\n" : "";
-        $this->template = $newLine ? "{{" . trim($this->name) : "{{" . $this->name;
-        $i = 1;
-        foreach ($this->parameters as $key => $value) {
-            $value = $newLine ? trim($value) : $value;
+        $separator = $newLine ? "\n" : "";
+        $templateName = $newLine ? trim($this->name) : $this->name;
 
-            if ($i == $key) {
-                $this->template .= "|" . $value;
+        $result = "{{" . $templateName;
+        $index = 1;
+        foreach ($this->parameters as $key => $value) {
+            $formattedValue = $newLine ? trim($value) : $value;
+
+            if ($index == $key) {
+                $result .= "|" . $formattedValue;
             } else {
-                if ($ljust > 0) {
-                    $key = str_pad($key, $ljust, " ");
-                }
-                // $this->template .= $line . "|" . $key . " = " . $value;
-                $this->template .= $line . "|" . $key . "=" . $value;
+                $formattedKey = $ljust > 0 ? str_pad($key, $ljust, " ") : $key;
+                // $result .= $separator . "|" . $formattedKey . " = " . $formattedValue;
+                $result .= $separator . "|" . $formattedKey . "=" . $formattedValue;
             }
-            $i++;
+            $index++;
         }
-        $this->template .= $line . "}}";
-        return $this->template;
+        $result .= $separator . "}}";
+        return $result;
+    }
+    private function formatParameters(string $separator, int $ljust, bool $newLine): string
+    {
+        $result = "";
+        $index = 1;
+        foreach ($this->parameters as $key => $value) {
+            $formattedValue = $newLine ? trim($value) : $value;
+
+            if ($index == $key) {
+                $result .= "|" . $formattedValue;
+            } else {
+                $formattedKey = $ljust > 0 ? str_pad($key, $ljust, " ") : $key;
+                // $result .= $separator . "|" . $formattedKey . " = " . $formattedValue;
+                $result .= $separator . "|" . $formattedKey . "=" . $formattedValue;
+            }
+            $index++;
+        }
+
+        return $result;
+    }
+
+    public function toString_new(bool $newLine = false, $ljust = 0): string
+    {
+        $separator = $newLine ? "\n" : "";
+        $templateName = $newLine ? trim($this->name) : $this->name;
+
+        $result = "{{" . $templateName;
+
+        $result .= $this->formatParameters($separator, $ljust, $newLine);
+
+        $result .= $separator . "}}";
+        return $result;
     }
 }
