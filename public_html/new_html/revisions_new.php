@@ -97,9 +97,9 @@ function make_badge($files, $file)
     return "";
 }
 // ---
-$mainDir = __DIR__ . '/revisions_new/';
+$mainDir = __DIR__ . '/../revisions_new/';
 // ---
-$dirs = array_filter(glob(__DIR__ . '/revisions_new/*/'), 'is_dir');
+$dirs = array_filter(glob(__DIR__ . '/../revisions_new/*/'), 'is_dir');
 // sort directories by last modified date
 usort($dirs, function ($a, $b) {
     $timeA = is_file($a . '/wikitext.txt') ? filemtime($a . '/wikitext.txt') : filemtime($a);
@@ -159,7 +159,6 @@ foreach ($dirs as $dir) {
     // ---
     $title = htmlspecialchars($title);
     // ---
-    $url = "$main_url/revisions_new/$dir_path";
     $url = "open.php?revid=$dir_path&file";
     // ---
     $re_create_td = (isset($_GET['re'])) ? <<<HTML

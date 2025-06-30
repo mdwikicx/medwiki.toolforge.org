@@ -12,7 +12,7 @@ $content_type = ($file == 'wikitext.txt') ? "text/plain" : "text/html";
 
 header("Content-type: $content_type");
 
-$file_path = __DIR__ . "/revisions_new/$revid/$file";
+$file_path = __DIR__ . "/../revisions_new/$revid/$file";
 
 $text = file_get_contents($file_path) ?? '';
 
