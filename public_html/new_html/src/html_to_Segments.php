@@ -4,7 +4,7 @@ namespace Segments;
 /*
 use function Segments\html_to_seg;
 */
-
+use function Printn\test_print;
 use function Post\handle_url_request;
 use function NewHtml\FileHelps\file_write;
 use function NewHtml\FileHelps\read_file;

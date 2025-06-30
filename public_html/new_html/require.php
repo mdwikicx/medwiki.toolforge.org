@@ -6,13 +6,7 @@ if (isset($_GET['test']) || isset($_COOKIE['test'])) {
     error_reporting(E_ALL);
 }
 
-function test_print($str)
-{
-    if (isset($_GET['test']) || defined('DEBUGX')) {
-        echo $str;
-        echo "\n";
-    }
-}
+include_once __DIR__ . '/src/print.php';
 
 include_once __DIR__ . '/src/WikiText/require.php';
 

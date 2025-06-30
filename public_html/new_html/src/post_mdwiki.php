@@ -9,6 +9,8 @@ use function PostMdwiki\handle_url_request_mdwiki;
 // https://mdwiki.org/w/rest.php/v1/page/Sympathetic_crashing_acute_pulmonary_edema/html
 // https://mdwiki.org/w/rest.php/v1/revision/1420795/html
 
+use function Printn\test_print;
+
 $usr_agent = 'WikiProjectMed Translation Dashboard/1.0 (https://medwiki.toolforge.org/; tools.medwiki@toolforge.org)';
 
 function handle_url_request_mdwiki(string $endPoint, string $method = 'GET', array $params = []): string

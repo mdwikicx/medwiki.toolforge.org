@@ -2,6 +2,12 @@
 
 namespace NewHtml\FileHelps;
 
+if (isset($_GET['test']) || isset($_COOKIE['test'])) {
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+}
+use function Printn\test_print;
 /*
 use:
 use function NewHtml\FileHelps\get_file_dir;

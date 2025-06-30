@@ -9,8 +9,8 @@ use function Fixes\DelMtRefs\del_empty_refs;
 */
 
 
-use function WikiParse\Citations\get_full_refs;
-use function WikiParse\Citations\getShortCitations;
+use function WikiParse\Reg_Citations\get_full_refs;
+use function WikiParse\Reg_Citations\getShortCitations;
 
 function del_empty_refs($first)
 {
