@@ -6,16 +6,5 @@ if (isset($_GET['test']) || isset($_COOKIE['test'])) {
     error_reporting(E_ALL);
 }
 
-include_once __DIR__ . '/src/print.php';
-
-include_once __DIR__ . '/src/WikiText/require.php';
-
-require_once __DIR__ . "/src/file_helps.php";
+include_once __DIR__ . '/src/require.php';
 require_once __DIR__ . "/jsons_data/json_data.php";
-require_once __DIR__ . "/src/post.php";
-require_once __DIR__ . "/src/post_mdwiki.php";
-require_once __DIR__ . "/src/fix_html.php";
-require_once __DIR__ . "/src/html_to_Segments.php";
-require_once __DIR__ . "/src/wikitext_to_html.php";
-require_once __DIR__ . "/src/WikiText/lead_section.php";
-require_once __DIR__ . "/src/WikiText/index.php";

@@ -9,9 +9,9 @@ use function Fixes\ExpendRefs\refs_expend_work;
 
 */
 
-use function Printn\test_print;
 use function WikiParse\Reg_Citations\get_full_refs;
 use function WikiParse\Reg_Citations\getShortCitations;
+use function Printn\test_print;
 
 function refs_expend_work($first, $alltext)
 {

@@ -10,8 +10,6 @@ use function WikiParse\Template\getTemplates;
 
 */
 
-include_once __DIR__ . "/src/ParserTemplates.php";
-
 use WikiConnect\ParseWiki\ParserTemplate;
 use WikiConnect\ParseWiki\ParserTemplates;
 
