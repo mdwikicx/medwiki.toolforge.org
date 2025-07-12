@@ -39,9 +39,9 @@ class Template
             unset($this->parameters[$key]);
         }
     }
-    public function getParameter(string $key): string
+    public function getParameter(string $key, string $default = null): string
     {
-        return $this->parameters[$key] ?? "";
+        return $this->parameters[$key] ?? $default;
     }
     public function setTempName(string $name): void
     {
