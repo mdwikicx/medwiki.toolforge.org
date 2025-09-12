@@ -1,6 +1,5 @@
 <?php
 
-
 header("Access-Control-Allow-Origin: *");
 
 $wmcloud = $_GET['wmcloud'] ?? ($_POST['wmcloud'] ?? '');
