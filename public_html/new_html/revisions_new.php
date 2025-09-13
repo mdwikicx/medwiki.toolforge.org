@@ -80,7 +80,7 @@ echo <<<HTML
     </head>
 HTML;
 
-require_once __DIR__ . "/src/file_helps.php";
+require_once __DIR__ . "/new_html_src/file_helps.php";
 require_once __DIR__ . "/jsons_data/json_data.php";
 
 use function NewHtml\FileHelps\get_revisions_new_dir;

@@ -6,5 +6,5 @@ if (isset($_GET['test']) || isset($_COOKIE['test'])) {
     error_reporting(E_ALL);
 }
 
-include_once __DIR__ . '/src/require.php';
+include_once __DIR__ . '/new_html_src/require.php';
 require_once __DIR__ . "/jsons_data/json_data.php";
