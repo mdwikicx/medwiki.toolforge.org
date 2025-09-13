@@ -8,8 +8,6 @@ Usage:
 use function Fixes\FixImages\remove_images;
 use function Fixes\FixImages\remove_videos;
 
-*/
-
 if (!function_exists('str_starts_with')) {
     function str_starts_with($text, $start)
     {
@@ -23,6 +21,8 @@ if (!function_exists('str_ends_with')) {
         return substr($string, -$len) === $endString;
     }
 }
+
+*/
 
 function remove_images($text)
 {
