@@ -7,4 +7,4 @@ if (isset($_GET['test']) || isset($_COOKIE['test'])) {
 }
 
 include_once __DIR__ . '/new_html_src/require.php';
-require_once __DIR__ . "/jsons_data/json_data.php";
+require_once __DIR__ . "/json_data.php";

@@ -81,7 +81,7 @@ echo <<<HTML
 HTML;
 
 require_once __DIR__ . "/new_html_src/file_helps.php";
-require_once __DIR__ . "/jsons_data/json_data.php";
+require_once __DIR__ . "/json_data.php";
 
 use function NewHtml\FileHelps\get_revisions_new_dir;
 use function NewHtml\JsonData\get_Data;

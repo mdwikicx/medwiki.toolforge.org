@@ -1,10 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
 # https://www.mediawiki.org/wiki/Download_from_Git#Fetch_external_libraries
 
 git clone https://gerrit.wikimedia.org/r/mediawiki/core.git mediawiki
 
-git fetch --tags
-git checkout 1.44.0
-
+git -C mediawiki fetch --tags
+git -C mediawiki checkout 1.44.0
 
 zip -r mediawiki.zip mediawiki -9 -x "*/.git/*" "*/i18n/*" "*/tests/*"
 
@@ -12,7 +14,7 @@ zip -r mediawiki.zip mediawiki -9 -x "*/.git/*" "*/i18n/*" "*/tests/*"
 # user
 # password
 
-cd extensions
+cd mediawiki/extensions
 git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/BetaFeatures --branch REL1_44
 git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/DiscussionTools --branch REL1_44
 git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/Interwiki --branch REL1_44
@@ -32,15 +34,14 @@ git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/VisualEditor --bra
 git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/ContentTranslation --branch REL1_44
 git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/WikimediaMessages --branch REL1_44
 
+zip -r -9 ~/cx_1.44.zip ~/public_html/mediawiki/extensions/ContentTranslation -x '*/.git/*' '*/i18n/*' '*/vendor/*'
+
 tfw php8.2 shell
-cd public_html/mediawiki
+
+cd "$HOME/public_html/mediawiki"
 
 composer update --no-dev
 
 php maintenance/run.php update
-
-
-zip -r -9 ~/cx_1.44.zip ~/public_html/mediawiki/extensions/ContentTranslation -x '*/.git/*' '*/i18n/*' '*/vendor/*'
-
 
 composer require mediawiki/oauthclient

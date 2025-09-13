@@ -83,7 +83,6 @@ function remove_videos($text)
             continue;
         }
         // ---
-        $text = str_replace($link, "", $text);
     }
     // ---
     return $text;
