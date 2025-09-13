@@ -1,4 +1,5 @@
 <?php
+
 namespace Fixes\FixImages;
 
 /*
@@ -11,7 +12,7 @@ use function Fixes\FixImages\remove_images;
 
 function remove_images($text)
 {
-    $pattern = '/\[\[(File:[^][|]+)\|([^][]*(\[\[[^][]+\]\][^][]*)*)\]\]/x';
+    $pattern = '/\[\[(File:[^\]\[\|]+)\|([^\]\[]*(\[\[[^\]\[]+\]\][^\]\[]*)*)\]\]/x';
     // ---
     preg_match_all($pattern, $text, $matches);
     // ---
