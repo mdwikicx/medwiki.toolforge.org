@@ -22,26 +22,7 @@ else
     exit 1
 fi
 
-rm -rf "$CLONE_DIR"/.git
-rm -rf "$CLONE_DIR"/public_html/w
-rm -rf "$CLONE_DIR"/public_html/get_html/revisions
-rm -rf "$CLONE_DIR"/public_html/mdtexts/html
-rm -rf "$CLONE_DIR"/public_html/mdtexts/segments
-rm -rf "$CLONE_DIR"/public_html/mdtexts/wikitext
-rm -rf "$CLONE_DIR"/public_html/mdtexts/*.json
-rm -rf "$CLONE_DIR"/public_html/new_html/revisions
-rm -rf "$CLONE_DIR"/public_html/new_html/revisions_new
-rm -rf "$CLONE_DIR"/public_html/revisions_new
-
 # Copy the required files to the target directory
-cp -rf "$CLONE_DIR"/public_html/* "$TARGET_DIR/" -v
+cp -rf "$CLONE_DIR"/public_html/new_html/* "public_html/new_html" -v
 
-# Optional: Set permissions
-# chmod -R 6770 "$TARGET_DIR"
-# find "$TARGET_DIR" -type f ! -name "*.pyc" -exec chmod 6770 {} \;
-
-# Optional: Install dependencies
-#"$HOME/local/bin/python3" -m pip install -r "$TARGET_DIR/requirements.in"
-
-# Remove the "$CLONE_DIR" directory.
 rm -rf "$CLONE_DIR"
