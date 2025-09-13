@@ -80,8 +80,8 @@ echo <<<HTML
     </head>
 HTML;
 
-require_once __DIR__ . "/src/file_helps.php";
-require_once __DIR__ . "/jsons_data/json_data.php";
+require_once __DIR__ . "/new_html_src/file_helps.php";
+require_once __DIR__ . "/json_data.php";
 
 use function NewHtml\FileHelps\get_revisions_new_dir;
 use function NewHtml\JsonData\get_Data;
@@ -201,7 +201,7 @@ $re_create_th = (isset($_GET['re'])) ? "<th>Re create</th>" : '';
 ?>
 
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light-subtle">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">MDWiki</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
