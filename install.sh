@@ -9,8 +9,8 @@ git checkout 1.44.0
 zip -r mediawiki.zip mediawiki -9 -x "*/.git/*" "*/i18n/*" "*/tests/*"
 
 
-# admin
-# newwiki2025
+# user
+# password
 
 cd extensions
 git clone https://gerrit.wikimedia.org/r/mediawiki/extensions/BetaFeatures --branch REL1_44
