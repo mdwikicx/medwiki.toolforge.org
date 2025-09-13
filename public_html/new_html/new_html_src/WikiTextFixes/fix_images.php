@@ -62,11 +62,7 @@ function remove_videos($text)
 {
     $pattern = '/\[\[(File:[^\]\[\|]+)\|([^\]\[]*(\[\[[^\]\[]+\]\][^\]\[]*)*)\]\]/x';
     // ---
-    $video_ends = [
-        "webm",
-        "ogg",
-        "mb4",
-    ];
+    $video_exts = ['webm', 'ogv', 'ogg', 'mp4'];
     // ---
     preg_match_all($pattern, $text, $matches);
     // ---
@@ -75,14 +71,11 @@ function remove_videos($text)
         // file_name example: File:AwareLogo.webm
         // ---
         $file_name = $matches[1][array_search($link, $matches[0])];
+        $ext = strtolower((string) pathinfo($file_name, PATHINFO_EXTENSION));
         // ---
-        if (in_array(pathinfo($file_name, PATHINFO_EXTENSION), $video_ends)) {
-            // ---
-            $text = str_replace($link, "", $text);
-            // ---
-            continue;
+        if (in_array($ext, $video_exts, true)) {
+            $text = str_replace($link, '', $text);
         }
-        // ---
     }
     // ---
     return $text;

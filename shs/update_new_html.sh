@@ -22,7 +22,12 @@ else
     exit 1
 fi
 
+mkdir -p "public_html/new_html"
+
 # Copy the required files to the target directory
-cp -rf "$CLONE_DIR"/public_html/new_html/* "public_html/new_html" -v
+# cp -rf "$CLONE_DIR"/public_html/new_html/* "public_html/new_html" -v
+
+# Sync required files to the target directory
+rsync -a --delete --info=stats1,progress2 "$CLONE_DIR/public_html/new_html/" "public_html/new_html/"
 
 rm -rf "$CLONE_DIR"

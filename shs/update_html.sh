@@ -36,6 +36,9 @@ rm -rf "$CLONE_DIR"/public_html/revisions_new
 # Copy the required files to the target directory
 cp -rf "$CLONE_DIR"/public_html/* "$TARGET_DIR/" -v
 
+# Sync required files to the target directory
+# rsync -a --delete --info=stats1,progress2 "$CLONE_DIR/public_html/" "$TARGET_DIR/"
+
 # Optional: Set permissions
 # chmod -R 6770 "$TARGET_DIR"
 # find "$TARGET_DIR" -type f ! -name "*.pyc" -exec chmod 6770 {} \;
