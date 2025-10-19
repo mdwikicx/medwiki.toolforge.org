@@ -18,5 +18,5 @@ jobs:
           script_stop: true
           key: ${{ secrets.KEY }}
           script: |
-            become ${{ secrets.TOOL }} sh -c "shs/update_html.sh; echo ''"
-            become ${{ secrets.TOOL2 }} sh -c "shs/update_new_html.sh; echo ''"
+            become ${{ secrets.TOOL }} bash -lc "shs/update_html.sh; echo ''"
+            become ${{ secrets.TOOL2 }} bash -lc "shs/update_new_html.sh; echo ''"

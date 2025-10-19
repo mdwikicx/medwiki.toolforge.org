@@ -40,8 +40,8 @@ cp -rf "$CLONE_DIR"/public_html/* "$TARGET_DIR/" -v
 # rsync -a --delete --info=stats1,progress2 "$CLONE_DIR/public_html/" "$TARGET_DIR/"
 
 # Optional: Set permissions
-# chmod -R 6770 "$TARGET_DIR"
-# find "$TARGET_DIR" -type f ! -name "*.pyc" -exec chmod 6770 {} \;
+# chmod -R 770 "$TARGET_DIR"
+# find "$TARGET_DIR" -type f ! -name "*.pyc" -exec chmod 770 {} \;
 
 # Optional: Install dependencies
 #"$HOME/local/bin/python3" -m pip install -r "$TARGET_DIR/requirements.in"
