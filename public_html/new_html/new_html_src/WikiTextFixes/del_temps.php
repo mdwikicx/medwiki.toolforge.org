@@ -13,6 +13,7 @@ use function Fixes\DelTemps\remove_lead_templates;
 use function WikiParse\Template\getTemplates;
 
 $tempsToDelete = [
+    "rtt",
     "#unlinkedwikibase",
     "about",
     "anchor",
