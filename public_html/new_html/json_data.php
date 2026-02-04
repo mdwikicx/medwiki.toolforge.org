@@ -43,9 +43,9 @@ function get_Data($tyt)
 {
     global $json_file_all, $json_file;
     // ---
-    $json_file = ($tyt == 'all') ? $json_file_all : $json_file;
+    $file = ($tyt == 'all') ? $json_file_all : $json_file;
     // ---
-    $file_text = read_file($json_file);
+    $file_text = read_file($file);
     // ---
     if ($file_text == '') return [];
     // ---
