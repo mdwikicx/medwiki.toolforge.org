@@ -6,9 +6,9 @@ namespace WikiParse\Reg_Citations;
 Usage:
 
 use function WikiParse\Reg_Citations\get_name;
-use function WikiParse\Reg_Citations\get_Reg_Citations;
+use function WikiParse\Reg_Citations\get_regex_citations;
 use function WikiParse\Reg_Citations\get_full_refs;
-use function WikiParse\Reg_Citations\getShortCitations;
+use function WikiParse\Reg_Citations\get_short_citations;
 
 */
 
@@ -34,7 +34,7 @@ function get_name($options)
     $name = trim($matches[1]);
     return $name;
 }
-function get_Reg_Citations($text)
+function get_regex_citations($text)
 {
     preg_match_all("/<ref([^\/>]*?)>(.+?)<\/ref>/is", $text, $matches);
     // ---
@@ -59,7 +59,7 @@ function get_Reg_Citations($text)
 function get_full_refs($text)
 {
     $full = [];
-    $citations = get_Reg_Citations($text);
+    $citations = get_regex_citations($text);
     // ---
     foreach ($citations as $cite) {
         $name = $cite["name"];
@@ -71,7 +71,7 @@ function get_full_refs($text)
     return $full;
 }
 
-function getShortCitations($text)
+function get_short_citations($text)
 {
     preg_match_all("/<ref ([^\/>]*?)\/\s*>/is", $text, $matches);
     // ---
