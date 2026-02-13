@@ -19,4 +19,3 @@ jobs:
           key: ${{ secrets.KEY }}
           script: |
             become ${{ secrets.TOOL }} bash -lc "shs/update_html.sh && echo ''"
-            become ${{ secrets.TOOL2 }} bash -lc "shs/update_new_html.sh && echo ''"

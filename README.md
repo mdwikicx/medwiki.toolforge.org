@@ -16,16 +16,6 @@ The Medwiki project is a web-based application hosted on [Toolforge](https://med
 │   │   ├── index.php
 │   │   ├── post.php
 │   │   ├── helps.php
-│   ├── 📂 new_html  # Refined WikiText processing engine
-│   │   ├── 📂 WikiText
-│   │   │   ├── 📂 WikiParse  # Parsing modules
-│   │   │   │   ├── Category.php
-│   │   │   │   ├── Citations.php
-│   │   │   │   ├── Template.php
-│   │   │   ├── 📂 fixes  # Fixer scripts for text normalization
-│   │   │   │   ├── fix_cats.php
-│   │   │   │   ├── del_mt_refs.php
-│   │   │   ├── fix_wikitext.php
 │   ├── 📂 mdtexts  # Alternative content processing
 │   ├── 📂 w  # Legacy/static content & release notes
 ├── .coderabbit.yaml  # Configuration management
@@ -38,7 +28,6 @@ The Medwiki project is a web-based application hosted on [Toolforge](https://med
 - **Public HTML Directory**: Serves as the web root.
 - **API Endpoints**:
   - `get_html`: Processes WikiText and converts it to HTML.
-  - `new_html`: Implements a structured and modular approach for text processing.
 - **WikiText Processing Modules**:
   - `WikiParse`: Tokenization, template parsing.
   - `Fixers`: Scripts to sanitize and standardize WikiText.
