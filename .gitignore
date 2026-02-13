@@ -14,9 +14,6 @@ public_html/post.php
 public_html/index.php
 *.config.1
 public_html/mw/LocalSettings.php
-public_html/new_html/jsons_data/*.json
-public_html/new_html/tests/text.php
-public_html/new_html/x.py
-public_html/new_html/x.php
 /public_html/revisions_new/**
 !/public_html/revisions_new/index.php
+*.7z
