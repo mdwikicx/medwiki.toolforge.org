@@ -17,3 +17,4 @@ public_html/mw/LocalSettings.php
 /public_html/revisions_new/**
 !/public_html/revisions_new/index.php
 *.7z
+/public_html/new_html
