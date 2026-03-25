@@ -110,23 +110,6 @@ function count_sections($html)
     return count($elements);
 }
 
-function get_section0_old($HTML_text)
-{
-    if (count_sections($HTML_text) < 3) {
-        return $HTML_text;
-    }
-    // split before <section data-mw-section-id="1" then add </body></html>
-    $refs = get_references_section($HTML_text);
-
-    // $pos = strpos($HTML_text, '<section data-mw-section-id="1"');
-    $pos = strpos($HTML_text, '</section>');
-
-    if ($pos !== false) {
-        $HTML_text = substr($HTML_text, 0, $pos) . "</section>" . $refs . '</body></html>';
-    }
-    return $HTML_text;
-}
-
 function get_section0($HTML_text)
 {
     if (count_sections($HTML_text) < 3) {
