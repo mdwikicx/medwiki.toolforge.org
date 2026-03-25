@@ -4,7 +4,7 @@ const mdwiki_last_url = { url: "" };
 const ENDPOINTS = {
 	mdwiki: "https://mdwiki.org",
 	mdwiki_wmcloud: "https://mdwiki.wmcloud.org",
-	medwikiToolforge: "https://medwiki.toolforge.org",
+	medwikiToolforge: "https://mdwikicx.toolforge.org",
 	local: "http://localhost:8000"
 }
 
@@ -86,7 +86,7 @@ async function postJson(end_point, data) {
 async function get_mdtexts_2024(title) {
 	let sanitizedTitle = title.replace(/['" :/]/g, "_");
 	// ---
-	let host = (window.location.hostname === "mdwikicx.toolforge.org") ? window.location.hostname : "medwiki.toolforge.org";
+	let host = (window.location.hostname === "mdwikicx.toolforge.org") ? window.location.hostname : "mdwikicx.toolforge.org";
 	const url = `https://${host}/mdtexts/segments.php?title=${sanitizedTitle}`;
 	// ---
 	const data = await fetchJson(url);
@@ -119,7 +119,7 @@ async function get_mdtexts_2024(title) {
 }
 
 function isMedwikiHost() {
-	return window.location.hostname === "medwiki.toolforge.org";
+	return window.location.hostname === "mdwikicx.toolforge.org";
 }
 
 function shouldUse2025() {
@@ -246,7 +246,7 @@ async function get_new_html_2025(title, tr_type) {
 	};
 	if (tr_type === "all") params.all = "all";
 	// ---
-	let host = (window.location.hostname === "mdwikicx.toolforge.org") ? window.location.hostname : "medwiki.toolforge.org";
+	let host = (window.location.hostname === "mdwikicx.toolforge.org") ? window.location.hostname : "mdwikicx.toolforge.org";
 	// ---
 	const url = `https://${host}/new_html/index.php?${$.param(params)}`;
 	// ---
@@ -254,9 +254,9 @@ async function get_new_html_2025(title, tr_type) {
 }
 
 async function get_Segments_from_mdwiki(targetLanguage, title, tr_type) {
-	// var url = "https://medwiki.toolforge.org/get_html/index.php";
+	// var url = "https://mdwikicx.toolforge.org/get_html/index.php";
 
-	let host = (window.location.hostname === "mdwikicx.toolforge.org") ? window.location.hostname : "medwiki.toolforge.org";
+	let host = (window.location.hostname === "mdwikicx.toolforge.org") ? window.location.hostname : "mdwikicx.toolforge.org";
 
 	const params = {
 		sourcelanguage: "mdwiki",

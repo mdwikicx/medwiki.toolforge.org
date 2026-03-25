@@ -66,7 +66,7 @@ function add_sw_categories(html) {
 
 
 function isMedwikiHost() {
-	return typeof window !== "undefined" && window.location.hostname === "medwiki.toolforge.org";
+	return typeof window !== "undefined" && window.location.hostname === "mdwikicx.toolforge.org";
 }
 
 function shouldUse2025() {
@@ -149,7 +149,7 @@ async function getMedwikiHtml(title, tr_type) {
 	return (data && data.html) ? data.html : "";
 }
 function get_endpoint_and_title(tr_type, title) {
-	let end_point = "https://medwiki.toolforge.org";
+	let end_point = "https://mdwikicx.toolforge.org";
 
 	if (tr_type === "all") {
 		// if title contains slashes
@@ -233,7 +233,7 @@ async function get_new_html_2025(title, tr_type) {
 	if (tr_type === "all") {
 		params.all = "all";
 	}
-	let host = (window.location.hostname === "mdwikicx.toolforge.org") ? window.location.hostname : "medwiki.toolforge.org";
+	let host = (window.location.hostname === "mdwikicx.toolforge.org") ? window.location.hostname : "mdwikicx.toolforge.org";
 	// ---
 	const url = `https://${host}/new_html/index.php?` + $.param(params);
 
@@ -270,7 +270,7 @@ async function get_mdtexts_2024(title) {
 		categories: []
 	}
 	// ---
-	let host = (window.location.hostname === "mdwikicx.toolforge.org") ? window.location.hostname : "medwiki.toolforge.org";
+	let host = (window.location.hostname === "mdwikicx.toolforge.org") ? window.location.hostname : "mdwikicx.toolforge.org";
 	const url = `https://${host}/mdtexts/segments.php?title=` + title;
 	// ---
 	const options = {
@@ -323,9 +323,9 @@ async function get_mdtexts_2024(title) {
 }
 
 async function get_Segments_from_mdwiki(targetLanguage, title, tr_type) {
-	// var url = "https://medwiki.toolforge.org/get_html/index.php";
+	// var url = "https://mdwikicx.toolforge.org/get_html/index.php";
 
-	let host = (window.location.hostname === "mdwikicx.toolforge.org") ? window.location.hostname : "medwiki.toolforge.org";
+	let host = (window.location.hostname === "mdwikicx.toolforge.org") ? window.location.hostname : "mdwikicx.toolforge.org";
 	const params = {
 		sourcelanguage: "mdwiki",
 		targetlanguage: targetLanguage,
@@ -423,7 +423,7 @@ async function fetchSourcePageContent_mdwiki(page_title, targetLanguage, tr_type
 	mdwiki_last_url.url = "";
 	// ---
 	// if page_title start with "Video:" then tr_type = all
-	if (page_title.startsWith("Video:")) {
+	if (page_title.startsWith("Video:") || page_title.startsWith("video:")) {
 		tr_type = "all";
 	}
 	// ---
