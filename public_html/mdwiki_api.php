@@ -1,7 +1,5 @@
 <?php
 
-header("Access-Control-Allow-Origin: *");
-
 $wmcloud = $_GET['wmcloud'] ?? ($_POST['wmcloud'] ?? '');
 
 $api_url = "https://mdwiki.org/w/api.php";

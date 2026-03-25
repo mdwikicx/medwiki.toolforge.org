@@ -308,5 +308,5 @@ $wgResourceModules["mw.cx.SiteMapper"]["packageFiles"][1]["config"]["SiteTemplat
 // $wgContentTranslationEnableUnifiedDashboard = ;
 // $wgContentTranslationTranslateInTarget = true;
 
-$wgExtraLanguageNames['mdwiki'] = 'mdwiki';
-$wgExtraLanguageNames['nr'] = 'isiNdebele seSewula';
+$wgExtraLanguageNames["mdwiki"] = "mdwiki";
+$wgExtraLanguageNames["nr"] = "isiNdebele seSewula";
